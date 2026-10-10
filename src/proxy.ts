@@ -23,7 +23,12 @@ export async function proxy(request:NextRequest) {
    const result=await fetch(endpoint,{headers:{apikey:key,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(8000)});
    if(result.ok){
     const products=await result.json();
-    if(!products.length){const missing=NextResponse.rewrite(new URL('/not-found',request.url),{status:404,request:{headers}});missing.headers.set('Content-Security-Policy',policy);missing.headers.set('Cache-Control','private, no-store');return missing;}
+    if(!products.length){
+     // TLS terminates at Nginx; the internal Next.js listener uses HTTP.
+     const missingUrl=new URL('/not-found',request.url);
+     if(process.env.NODE_ENV==='production'&&['localhost','127.0.0.1','[::1]'].includes(missingUrl.hostname))missingUrl.protocol='http:';
+     const missing=NextResponse.rewrite(missingUrl,{status:404,request:{headers}});missing.headers.set('Content-Security-Policy',policy);missing.headers.set('Cache-Control','private, no-store');return missing;
+    }
     if(products[0].slug!==slug){const redirect=NextResponse.redirect(new URL('/products/'+encodeURIComponent(products[0].slug),request.url),308);redirect.headers.set('Content-Security-Policy',policy);return redirect;}
    }
   }catch{ /* A backend outage must not turn an existing product into a 404. */ }
