@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
+coverage/
+.DS_Store
+*.pem
+*.key
+*.ppk
+*firebase-adminsdk*.json
