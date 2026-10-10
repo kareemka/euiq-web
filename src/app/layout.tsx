@@ -6,6 +6,7 @@ import '@fontsource/noto-sans-arabic/600.css';
 import '@fontsource/noto-sans-arabic/700.css';
 import './globals.css';
 import './polish.css';
+import './carousel.css';
 import {ArabicValidation} from '@/components/arabic-validation';
 import {StoreProvider} from '@/components/store-provider';
 import {serverCatalog} from '@/lib/server-catalog';
