@@ -12,3 +12,6 @@ coverage/
 *.key
 *.ppk
 *firebase-adminsdk*.json
+
+# Backend integration test remains in the parent workspace.
+src/lib/spwp.test.ts
