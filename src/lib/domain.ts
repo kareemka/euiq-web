@@ -34,6 +34,14 @@ export function validateCartChange(items: CartItem[], products: Product[], varia
  if(quantity>variant.stock_on_hand-variant.reserved) throw new Error('الكمية المطلوبة غير متاحة لهذا اللون');
 }
 
+// Iraqi month names, as shown on the birth date picker.
+export const monthNames = ['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'];
+// month is 1–12; with no year yet, February allows the 29th.
+export function daysInMonth(year: number, month: number) { return new Date(Date.UTC(year || 2000, month, 0)).getUTCDate(); }
+// Newest first, from the youngest allowed age (18) back to age 100.
+export function birthYears(now = new Date()) { const latest = Number(adultBirthDateMax(now).slice(0, 4)); return Array.from({length: 83}, (_, i) => latest - i); }
+export function joinBirthDate(year: number, month: number, day: number) { return year && month && day ? `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}` : ''; }
+
 export function adultBirthDateMax(now = new Date()) {
  const iraq = new Date(now.getTime()+3*3600000);
  const year=iraq.getUTCFullYear()-18, month=iraq.getUTCMonth();

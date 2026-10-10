@@ -15,7 +15,7 @@ export function arabicError(error: unknown, fallback = 'تعذر إكمال ال
 }
 
 export function validationMessage(validity: ValidityState, label: string, type: string, minLength: number, maxLength: number) {
- if (validity.valueMissing) return type === 'checkbox' ? 'يرجى تأكيد الموافقة للمتابعة.' : `يرجى إدخال ${label}.`;
+ if (validity.valueMissing) return type === 'checkbox' ? 'يرجى تأكيد الموافقة للمتابعة.' : type === 'select' ? `يرجى اختيار ${label}.` : `يرجى إدخال ${label}.`;
  if (validity.tooShort) return `أدخل ${minLength} أحرف على الأقل في ${label}.`;
  if (validity.tooLong) return `الحد الأعلى لهذا الحقل ${maxLength} أحرف.`;
  if (validity.typeMismatch) return type === 'email' ? 'أدخل بريدًا إلكترونيًا صحيحًا.' : 'أدخل رابطًا صحيحًا يبدأ بـhttps://.';
