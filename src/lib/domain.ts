@@ -3,6 +3,8 @@ export function deliveryGovernorates(settings: Settings) {
  return Object.keys(settings.delivery_fees).filter(name => name.trim() && Number.isInteger(settings.delivery_fees[name]) && settings.delivery_fees[name]>=0).sort((a,b)=>a.localeCompare(b,'ar'));
 }
 export const statuses: Record<string,string> = {pending:'قيد الموافقة',confirmed:'مؤكد',preparing:'قيد التجهيز',ready:'تم التجهيز',shipping:'في الطريق',delivered:'تم التوصيل',cancelled:'ملغى',returned:'راجع',postponed:'مؤجل',problem:'مشكلة'};
+// Colour family for each order status badge.
+export const statusTones: Record<string,'warning'|'info'|'success'|'danger'> = {pending:'warning',postponed:'warning',confirmed:'info',preparing:'info',ready:'info',shipping:'info',delivered:'success',cancelled:'danger',returned:'danger',problem:'danger'};
 export const money = (n: number) => new Intl.NumberFormat('en-IQ').format(n) + ' د.ع';
 // Price shortcuts on the home page: only limits that leave some products in and some out.
 const priceLimits=[25000,50000,100000,200000,500000];

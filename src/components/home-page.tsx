@@ -7,6 +7,7 @@ import {ArrowLeft,ShieldCheck,Heart,Drop,Gift,Sparkle,Diamond,MagnifyingGlass,Pa
 import {useStore} from '@/components/store-provider';
 import {CatalogGrid} from '@/components/catalog-grid';
 import type {Product} from '@/lib/types';
+// Category sections below only appear when they can fill a row of four.
 // Full rows of four: eight featured products when available, otherwise four (topped up with other products).
 function featuredPicks(products:Product[]){const featured=products.filter(p=>p.featured);return featured.length>=4?featured.slice(0,featured.length>=8?8:4):[...featured,...products.filter(p=>!p.featured)].slice(0,4);}
 export default function Home(){const {products,categories,banners,loading,error,reload}=useStore();const icons:Record<string,typeof Gift>={heart:Heart,drop:Drop,gift:Gift,sparkle:Sparkle,diamond:Diamond};
@@ -21,7 +22,7 @@ export default function Home(){const {products,categories,banners,loading,error,
   {(steps.length>0||offers.length>0)&&<div className="browse-group"><h3>حسب السعر</h3><div className="price-chips">{steps.map(step=><Link key={step} className="price-chip" href={`/categories?max=${step}`}>حتى {money(step)}</Link>)}{offers.length>0&&<Link className="price-chip offers" href="/categories?offers=1"><Tag size={18}/>العروض والخصومات</Link>}</div></div>}
  </section>
  {offers.length>0&&<section className="catalog-section offers-section" aria-labelledby="offers-title"><div className="section-heading"><div><span className="eyebrow">فرصة لاختيارك القادم</span><h2 id="offers-title">عروض تستحق الاهتمام</h2></div><Link href="/categories?offers=1">جميع العروض<ArrowLeft size={18}/></Link></div><CatalogGrid products={offers.slice(0,4)}/></section>}
- {categories.filter(c=>products.some(p=>p.category_id===c.id)).slice(0,2).map(c=><section className="catalog-section" key={c.id}><div className="section-heading"><h2>{c.title}</h2><Link href={categoryUrl(c)}>عرض القسم<ArrowLeft size={18}/></Link></div><CatalogGrid products={products.filter(p=>p.category_id===c.id).slice(0,4)}/></section>)}
+ {categories.filter(c=>products.filter(p=>p.category_id===c.id).length>=4).slice(0,2).map(c=><section className="catalog-section" key={c.id}><div className="section-heading"><h2>{c.title}</h2><Link href={categoryUrl(c)}>عرض القسم<ArrowLeft size={18}/></Link></div><CatalogGrid products={products.filter(p=>p.category_id===c.id).slice(0,4)}/></section>)}
  <section className="trust-strip" aria-label="لماذا تتسوّق معنا"><div><ShieldCheck size={28} weight="duotone"/><strong>خصوصية تامة</strong><span>تصفّح براحتك، وسجّل دخولك عندما تكون مستعداً للشراء.</span></div><div><Package size={28} weight="duotone"/><strong>تغليف آمن</strong><span>تغليف يحفظ خصوصيتك دون أي إشارة لمحتوى الطلب.</span></div><div><Truck size={28} weight="duotone"/><strong>توصيل داخل العراق</strong><span>متابعة واضحة لكل خطوة من طلبك.</span></div><div><Money size={28} weight="duotone"/><strong>الدفع عند الاستلام</strong><span>ادفع نقداً عند وصول طلبك.</span></div></section>
  <section className="editorial-banner"><ShieldCheck size={42} weight="duotone"/><div><h2>من اختيارك، إلى باب منزلك.</h2><p>جميع المنتجات والأسعار متاحة للتصفح، وخصوصيتك محفوظة في كل خطوة.</p></div><Link className="button" href="/categories">ابدأ التسوّق<ArrowLeft size={20}/></Link><Link className="button secondary" href="/privacy">اعرف المزيد</Link></section>
  </div>
