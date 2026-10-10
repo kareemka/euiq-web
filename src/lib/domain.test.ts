@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {normalizePhone,isAdult,validateCartChange,deliveryGovernorates} from './domain';
+import {normalizePhone,isAdult,validateCartChange,deliveryGovernorates,priceSteps} from './domain';
 import {demoSettings} from './demo';
 import {demoProducts} from './demo';
 describe('governorates configured by the store',()=>{
@@ -25,4 +25,8 @@ describe('color stock and product cap',()=>{
  it('rejects unavailable color and fractional quantities',()=>{expect(()=>validateCartChange([],demoProducts,empty.id,1)).toThrow();expect(()=>validateCartChange([],demoProducts,black.id,1.5)).toThrow()});
  it('uses available stock after reservations',()=>{const products=structuredClone(demoProducts);products[0].product_variants[0].reserved=5;expect(()=>validateCartChange([],products,black.id,1)).toThrow()});
  it('allows removal of an unavailable color',()=>expect(()=>validateCartChange([{variant_id:empty.id,quantity:1}],demoProducts,empty.id,0)).not.toThrow());
+});
+describe('home price shortcuts',()=>{
+ it('offers only limits that narrow the catalog',()=>expect(priceSteps([30000,120000,25000,75000])).toEqual([25000,50000,100000]));
+ it('hides shortcuts for an empty or single-price catalog',()=>{expect(priceSteps([])).toEqual([]);expect(priceSteps([40000,40000])).toEqual([]);});
 });

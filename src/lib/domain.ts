@@ -4,6 +4,9 @@ export function deliveryGovernorates(settings: Settings) {
 }
 export const statuses: Record<string,string> = {pending:'قيد الموافقة',confirmed:'مؤكد',preparing:'قيد التجهيز',ready:'تم التجهيز',shipping:'في الطريق',delivered:'تم التوصيل',cancelled:'ملغى',returned:'راجع',postponed:'مؤجل',problem:'مشكلة'};
 export const money = (n: number) => new Intl.NumberFormat('en-IQ').format(n) + ' د.ع';
+// Price shortcuts on the home page: only limits that leave some products in and some out.
+const priceLimits=[25000,50000,100000,200000,500000];
+export function priceSteps(prices: number[]) { const top=Math.max(0,...prices); return priceLimits.filter(limit=>limit<top&&prices.some(price=>price<=limit)); }
 export function normalizePhone(value: string) {
  const digits = value.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[^0-9]/g,'');
  const normalized = digits.startsWith('00964') ? '+'+digits.slice(2) : digits.startsWith('964') ? '+'+digits : digits.startsWith('07') ? '+964'+digits.slice(1) : digits.startsWith('7') ? '+964'+digits : '';

@@ -1,7 +1,8 @@
 export type Variant = { id: string; product_id: string; color_name: string | null; color_hex: string | null; stock_on_hand: number; reserved: number; active: boolean };
 export type Product = { id: string; slug?: string; category_id: string; title: string; summary: string; details: string; material: string; origin: string; price: number; compare_at_price: number | null; images: string[]; video_url: string | null; featured: boolean; product_variants: Variant[] };
 export type Category = { id: string; slug?: string; title: string; image_url?: string; icon: string; sort_order: number };
-export type Banner = { id: string; title: string; subtitle: string; image_url: string | null; target_category_id: string | null };
+// A banner opens one destination chosen in the admin app: a product, a category, or (neither set) the full catalog.
+export type Banner = { id: string; title: string; subtitle: string; image_url: string | null; target_category_id: string | null; target_product_id?: string | null; target_product_slug?: string | null };
 export type Settings = { support_phone: string; whatsapp_phone: string; payment_method: string; checkout_enabled: boolean; delivery_fees: Record<string,number>; baghdad_hours: number; other_hours: number; cancellation_policy: string };
 export type Profile = { id: string; name: string; phone: string; backup_phone: string | null; governorate: string; district: string; address_details: string; birth_date: string | null; privacy_accepted_at: string | null };
 export type CartItem = { variant_id: string; quantity: number };
