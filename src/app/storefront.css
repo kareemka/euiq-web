@@ -62,7 +62,7 @@ html{scroll-padding-top:104px}
 .section-heading>a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--teal);font-size:13px;font-weight:600;white-space:nowrap;transition:background-color .18s,border-color .18s}
 .section-heading>a:hover{background:var(--soft);border-color:#86b9b5}
 
-/* Product grid: four per row on desktop and tablets, two on phones. */
+/* Product grid: four per row on every screen size; phones get a compact card. */
 .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
 .product-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
 .product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:#d4c7b1}
@@ -229,22 +229,21 @@ html:has(.filter-sheet[open]){overflow:hidden}
  .section-heading{margin-bottom:16px}
  .section-heading h2{font-size:21px}
  .section-heading>a{font-size:12px;padding:0 12px;min-height:40px}
- .product-grid,.skeleton-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
- .product-card{border-radius:14px}
+ /* Four compact cards per row: image, name and price; the image and name open the product. */
+ .product-grid,.skeleton-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 6px}
+ .skeleton-grid div{aspect-ratio:.62;border-radius:10px}
+ .product-card{border-radius:10px}
  .product-card:hover{transform:none}
- .product-copy{padding:10px 10px 12px}
- .product-category{font-size:11px}
- .product-name{font-size:13px;line-height:1.65;min-height:3.3em}
- .price-row strong{font-size:16px}
- .price-row del{font-size:11px}
- .product-meta{margin:4px 0 10px}
- .swatch-mini span{width:13px;height:13px}
- .availability{font-size:11px}
- .product-cta{min-height:42px;font-size:13px;gap:5px;border-radius:10px}
- .product-cta>svg:last-child{display:none}
- .favorite{width:36px;height:36px;top:8px;inset-inline-end:8px}
- .badges{top:8px;inset-inline-start:8px}
- .discount,.soldout-badge{font-size:11px;padding:2px 8px}
+ .product-copy{padding:6px 6px 8px}
+ .product-category,.product-meta,.product-cta{display:none}
+ .product-name{font-size:11px;font-weight:500;line-height:1.55;min-height:3.1em}
+ .price-row{margin-top:2px;gap:0 4px}
+ .price-row strong{font-size:12px}
+ .price-row del{font-size:9px}
+ .favorite{width:26px;height:26px;top:auto;bottom:4px;inset-inline-end:4px}
+ .favorite svg{width:14px;height:14px}
+ .badges{top:4px;inset-inline-start:4px;gap:3px}
+ .discount,.soldout-badge{font-size:9px;padding:0 5px;line-height:1.7}
 
  .browse-panel{margin-top:36px;padding:20px 16px;border-radius:18px}
  .browse-head{flex-direction:column;align-items:stretch;gap:14px}
@@ -255,7 +254,7 @@ html:has(.filter-sheet[open]){overflow:hidden}
  .category-chip>span{width:38px;height:38px;border-radius:10px}
  .category-chip svg{width:21px;height:21px}
  .price-chip{font-size:13px;padding:0 14px}
- .offers-section{padding:18px 12px;border-radius:18px}
+ .offers-section{padding:16px 8px;border-radius:16px}
  .trust-strip{margin-top:36px;gap:10px}
  .trust-strip>div{padding:16px 14px;border-radius:14px}
  .trust-strip strong{font-size:14px}
@@ -284,8 +283,8 @@ html:has(.filter-sheet[open]){overflow:hidden}
  .brand span{display:none}
  .header-icon,.account-button{width:40px;height:40px}
  .hero-copy h1{font-size:22px}
- .product-name{font-size:12px}
- .product-cta{font-size:12px}
+ .product-name{font-size:10px}
+ .price-row strong{font-size:11px}
  .category-chip{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){
