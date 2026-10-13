@@ -2,7 +2,7 @@ import type { CartItem, Product, Profile, Settings } from './types';
 export function deliveryGovernorates(settings: Settings) {
  return Object.keys(settings.delivery_fees).filter(name => name.trim() && Number.isInteger(settings.delivery_fees[name]) && settings.delivery_fees[name]>=0).sort((a,b)=>a.localeCompare(b,'ar'));
 }
-export const statuses: Record<string,string> = {pending:'قيد الموافقة',confirmed:'مؤكد',preparing:'قيد التجهيز',ready:'تم التجهيز',shipping:'في الطريق',delivered:'تم التوصيل',cancelled:'ملغى',returned:'راجع',postponed:'مؤجل',problem:'مشكلة'};
+export const statuses: Record<string,string> = {pending:'قيد الموافقة',confirmed:'مؤكد',shipping:'في الطريق',delivered:'تم التوصيل',cancelled:'ملغى',returned:'راجع',postponed:'مؤجل',problem:'مشكلة'};
 export const money = (n: number) => new Intl.NumberFormat('en-IQ').format(n) + ' د.ع';
 export function normalizePhone(value: string) {
  const digits = value.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[^0-9]/g,'');
