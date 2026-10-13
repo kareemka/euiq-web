@@ -2,6 +2,7 @@ export function arabicError(error: unknown, fallback = 'تعذر إكمال ال
  const detail = error && typeof error === 'object' ? error as {message?: string; code?: string; status?: number} : {};
  const message = detail.message ?? (typeof error === 'string' ? error : '');
  const code = detail.code ?? '';
+ if (/WHATSAPP_DAILY_LIMIT/i.test(message+code)) return 'بلغت خدمة واتساب الحد؛ يتجدد الساعة 3 فجرًا بتوقيت بغداد.';
  if (/invalid.*(credential|login)|invalid_credentials/i.test(message + code)) return 'رقم الهاتف أو كلمة المرور غير صحيحة.';
  if (/otp_expired|token.*expired|invalid.*otp/i.test(message + code)) return 'رمز التحقق غير صحيح أو انتهت صلاحيته. اطلب رمزًا جديدًا.';
  if (/rate.limit|too many|over_.*rate_limit|429|security purposes/i.test(message + code)) return 'أرسلت طلبات متكررة. انتظر دقيقة ثم حاول مجددًا.';
