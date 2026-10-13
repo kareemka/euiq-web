@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {normalizePhone,isAdult,validateCartChange,deliveryGovernorates} from './domain';
+import {normalizePhone,isAdult,validateCartChange,deliveryGovernorates,priceSteps,daysInMonth,birthYears,joinBirthDate} from './domain';
 import {demoSettings} from './demo';
 import {demoProducts} from './demo';
 describe('governorates configured by the store',()=>{
@@ -25,4 +25,13 @@ describe('color stock and product cap',()=>{
  it('rejects unavailable color and fractional quantities',()=>{expect(()=>validateCartChange([],demoProducts,empty.id,1)).toThrow();expect(()=>validateCartChange([],demoProducts,black.id,1.5)).toThrow()});
  it('uses available stock after reservations',()=>{const products=structuredClone(demoProducts);products[0].product_variants[0].reserved=5;expect(()=>validateCartChange([],products,black.id,1)).toThrow()});
  it('allows removal of an unavailable color',()=>expect(()=>validateCartChange([{variant_id:empty.id,quantity:1}],demoProducts,empty.id,0)).not.toThrow());
+});
+describe('home price shortcuts',()=>{
+ it('offers only limits that narrow the catalog',()=>expect(priceSteps([30000,120000,25000,75000])).toEqual([25000,50000,100000]));
+ it('hides shortcuts for an empty or single-price catalog',()=>{expect(priceSteps([])).toEqual([]);expect(priceSteps([40000,40000])).toEqual([]);});
+});
+describe('birth date picker',()=>{
+ it('limits days to the chosen month and leap years',()=>{expect(daysInMonth(2001,2)).toBe(28);expect(daysInMonth(2004,2)).toBe(29);expect(daysInMonth(0,2)).toBe(29);expect(daysInMonth(1999,4)).toBe(30);expect(daysInMonth(1999,12)).toBe(31);});
+ it('lists years from the youngest adult age back to 100',()=>{const years=birthYears(new Date('2026-10-09T12:00:00Z'));expect(years[0]).toBe(2008);expect(years.at(-1)).toBe(1926);});
+ it('joins a complete date only',()=>{expect(joinBirthDate(1990,3,7)).toBe('1990-03-07');expect(joinBirthDate(1990,0,7)).toBe('');});
 });

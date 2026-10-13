@@ -15,6 +15,16 @@ npm test
 npm run build
 ```
 
+## Banner destinations
+
+Clicking anywhere on a home-page banner opens the destination chosen for it in the admin app. The storefront reads these fields from each banner returned by `catalog_page`:
+
+- `target_product_id` (and optionally `target_product_slug`): opens that product. Takes priority when both are set.
+- `target_category_id`: opens that category.
+- Neither set: opens all products.
+
+`target_product_id` must exist on the `banners` table and be returned by `catalog_page`; until then, banners link to their category or to all products.
+
 ## Production deployment
 
 - Checkout: `/var/www/euiq-web`

@@ -8,7 +8,7 @@ export function ArabicValidation() {
    if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement)) return;
    const label = field.labels?.[0]?.childNodes[0]?.textContent?.trim() || field.getAttribute('aria-label') || 'هذا الحقل';
    const input = field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement ? field : null;
-   field.setCustomValidity(validationMessage(field.validity, label, input?.type ?? '', input?.minLength ?? 0, input?.maxLength ?? 0));
+   field.setCustomValidity(validationMessage(field.validity, label, input?.type ?? 'select', input?.minLength ?? 0, input?.maxLength ?? 0));
    field.setAttribute('aria-invalid', 'true');
   };
   const reset = (event: Event) => {

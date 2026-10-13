@@ -16,5 +16,6 @@ describe('Arabic user messages',()=>{
  it('translates required fields and short names',()=>{
   expect(validationMessage({valueMissing:true} as ValidityState,'رقم الهاتف','tel',0,0)).toBe('يرجى إدخال رقم الهاتف.');
   expect(validationMessage({tooShort:true} as ValidityState,'الاسم','text',2,0)).toContain('أحرف على الأقل');
+  expect(validationMessage({valueMissing:true} as ValidityState,'سنة الميلاد','select',0,0)).toBe('يرجى اختيار سنة الميلاد.');
  });
 });
