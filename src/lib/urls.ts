@@ -8,9 +8,16 @@ export function titleSlug(title:string){return title.toLowerCase().replace(/[^a-
 export function decodeSlug(value:string){try{return decodeURIComponent(value);}catch{return value;}}
 export function orderUrl(order:{slug:string}){return '/orders/'+encodeURIComponent(order.slug);}
 type Linkable={id:string;slug?:string;title:string};
-export type BannerTarget={href:string;kind:'product'|'category'|'catalog'};
+export type BannerTarget={href:string;kind:'product'|'category'|'catalog'|'external'};
+export function safeBannerExternalUrl(value?:string|null){
+ if(!value||value.length>2048||/\s/.test(value))return null;
+ try{const url=new URL(value);return url.protocol==='https:'&&!url.username&&!url.password?url.href:null;}catch{return null;}
+}
+export function bannerDelay(seconds?:number|null){return Number.isInteger(seconds)&&seconds!>=1&&seconds!<=120?seconds!*1000:6000;}
 // The product wins if both are set. Unknown ids still link by id: the proxy and category page redirect them to the canonical slug.
-export function bannerTarget(banner:{target_category_id:string|null;target_product_id?:string|null;target_product_slug?:string|null},products:Linkable[],categories:Linkable[]):BannerTarget{
+export function bannerTarget(banner:{target_category_id:string|null;target_product_id?:string|null;target_product_slug?:string|null;external_url?:string|null},products:Linkable[],categories:Linkable[]):BannerTarget{
+ const external=safeBannerExternalUrl(banner.external_url);
+ if(external)return {kind:'external',href:external};
  const productId=banner.target_product_id,productSlug=banner.target_product_slug;
  if(productId||productSlug){
   const product=products.find(p=>(productId&&p.id===productId)||(productSlug&&p.slug===productSlug));

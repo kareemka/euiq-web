@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import {useEffect,useRef,useState} from 'react';
 import {ArrowLeft,CaretLeft,CaretRight,Pause,Play} from '@phosphor-icons/react';
-import {bannerTarget} from '@/lib/urls';
+import {bannerTarget,bannerDelay} from '@/lib/urls';
 import type {Banner,Category,Product} from '@/lib/types';
 
-const ctaLabel={product:'اطلب الآن',category:'تصفّح القسم',catalog:'اكتشف المنتجات'};
+const ctaLabel={product:'اطلب الآن',category:'تصفّح القسم',catalog:'اكتشف المنتجات',external:'زيارة الرابط'};
 
 export function HeroBanner({banners,categories,products}:{banners:Banner[];categories:Category[];products:Product[]}){
  const [position,setPosition]=useState(0),[paused,setPaused]=useState(false),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false),[hidden,setHidden]=useState(false),[reducedMotion,setReducedMotion]=useState(false);
@@ -13,6 +13,7 @@ export function HeroBanner({banners,categories,products}:{banners:Banner[];categ
  const count=banners.length,index=count?position%count:0,banner=banners[index];
  const rotating=count>1&&!paused&&!hovered&&!focused&&!hidden&&!reducedMotion;
  const target=bannerTarget(banner??{target_category_id:null},products,categories);
+ const externalProps=target.kind==='external'?{target:'_blank',rel:'noopener noreferrer',prefetch:false}:{};
  const label=target.kind==='category'?categories.find(c=>c.id===banner?.target_category_id)?.title:undefined;
  useEffect(()=>{
   const media=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -22,9 +23,9 @@ export function HeroBanner({banners,categories,products}:{banners:Banner[];categ
  },[]);
  useEffect(()=>{
   if(!rotating)return;
-  const timer=window.setTimeout(()=>setPosition(i=>(i+1)%count),6000);
+  const timer=window.setTimeout(()=>setPosition(i=>(i+1)%count),bannerDelay(banner?.display_seconds));
   return()=>window.clearTimeout(timer);
- },[rotating,count,position]);
+ },[rotating,count,position,banner?.id,banner?.display_seconds]);
  const move=(direction:number)=>setPosition(i=>(i+direction+count)%count);
  return <section className="hero-carousel" role="region" aria-roledescription="عرض شرائح" aria-label="بنرات المتجر"
   onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
@@ -35,12 +36,12 @@ export function HeroBanner({banners,categories,products}:{banners:Banner[];categ
   <div className="hero-slide" key={banner?.id??'default'} aria-roledescription={count>1?'شريحة':undefined} aria-label={count>1?`${index+1} من ${count}`:undefined}>
    <img className="hero-image" src={banner?.image_url||'/assets/hero-still.webp'} width={1536} height={1024} alt="" fetchPriority="high"/>
    {/* The whole banner opens its destination; the visible button below is the keyboard and screen-reader route to the same link. */}
-   <Link className="hero-hit" href={target.href} tabIndex={-1} aria-hidden="true"/>
+   <Link className="hero-hit" href={target.href} {...externalProps} tabIndex={-1} aria-hidden="true"/>
    <div className="hero-copy" aria-live={rotating?'off':'polite'} aria-atomic="true">
     <span className="eyebrow">{label??'اختيارات خاصة، بكل عناية'}</span>
     <h1>{banner?.title??'خصوصية تامة، واختيار بعناية.'}</h1>
     <p>{banner?.subtitle??'منتجات مختارة لحياة زوجية أفضل، وتسوّق براحة من منزلك.'}</p>
-    <Link href={target.href} className="button hero-cta">{ctaLabel[target.kind]}<ArrowLeft size={20}/></Link>
+    <Link href={target.href} {...externalProps} className="button hero-cta">{ctaLabel[target.kind]}<ArrowLeft size={20}/></Link>
    </div>
   </div>
   {count>1&&<div className="carousel-navigation" aria-label="التحكم بالبنرات">
