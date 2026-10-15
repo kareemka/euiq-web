@@ -34,12 +34,12 @@ export function HeroBanner({banners,categories,products}:{banners:Banner[];categ
   onTouchEnd={event=>{if(touch.current===null||count<2)return;const delta=event.changedTouches[0].clientX-touch.current;touch.current=null;if(Math.abs(delta)>45)move(delta>0?1:-1);}}
   onKeyDown={event=>{if(event.target!==event.currentTarget||count<2)return;if(event.key==='ArrowLeft'){event.preventDefault();move(1);}if(event.key==='ArrowRight'){event.preventDefault();move(-1);}}} tabIndex={0}>
   <div className="hero-slide" key={banner?.id??'default'} aria-roledescription={count>1?'شريحة':undefined} aria-label={count>1?`${index+1} من ${count}`:undefined}>
-   <img className="hero-image" src={banner?.image_url||'/assets/hero-still.webp'} width={1536} height={1024} alt="" fetchPriority="high"/>
+   <img className="hero-image" src="/assets/hero-reference-v2.webp" width={1536} height={1024} alt="" fetchPriority="high"/>
    {/* The whole banner opens its destination; the visible button below is the keyboard and screen-reader route to the same link. */}
    <Link className="hero-hit" href={target.href} {...externalProps} tabIndex={-1} aria-hidden="true"/>
    <div className="hero-copy" aria-live={rotating?'off':'polite'} aria-atomic="true">
-    <span className="eyebrow">{label??'اختيارات خاصة، بكل عناية'}</span>
-    <h1>{banner?.title??'خصوصية تامة، واختيار بعناية.'}</h1>
+    {label&&<span className="hero-category">{label}</span>}
+    <h1>{(banner?.title??'خصوصية تامة، واختيار بعناية.').split(/([0-9٠-٩]+[٪%])/).map((part,i)=>/[٪%]/.test(part)?<em key={i}>{part}</em>:part)}</h1>
     <p>{banner?.subtitle??'منتجات مختارة لحياة زوجية أفضل، وتسوّق براحة من منزلك.'}</p>
     <Link href={target.href} {...externalProps} className="button hero-cta">{ctaLabel[target.kind]}<ArrowLeft size={20}/></Link>
    </div>

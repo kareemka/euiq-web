@@ -4,7 +4,7 @@ import {createContext,useContext,useEffect,useState,useRef,useCallback} from 're
 import {usePathname,useRouter} from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import {House,SquaresFour,ShoppingCart,Package,User,Headset,WhatsappLogo,Phone,X,ShieldCheck,ArrowLeft,SignOut,Heart,MagnifyingGlass,Truck} from '@phosphor-icons/react';
+import {House,SquaresFour,ShoppingCart,Package,Headset,WhatsappLogo,Phone,X,ShieldCheck,ArrowLeft,SignOut,Heart,Truck} from '@phosphor-icons/react';
 import {supabase,isDemo} from '@/lib/supabase';
 import {getCatalog,cartProducts} from '@/lib/catalog';
 import {useCart} from '@/lib/cart';
@@ -12,6 +12,7 @@ import {completeProfile,deliveryGovernorates,isAdult,normalizePhone,validateCart
 import type {Product,Category,Settings,Banner,Profile,CatalogData} from '@/lib/types';
 import {demoSettings} from '@/lib/demo';
 import {BirthDateField} from './birth-date-field';
+import {StoreHeader} from './store-header';
 
 type StoreContext = {products:Product[];categories:Category[];settings:Settings;banners:Banner[];loading:boolean;error:string;profile:Profile|null;authReady:boolean;authError:string;favorites:string[];reload:()=>Promise<void>;requireAuth:(action:()=>void)=>void;changeCart:(variant:string,quantity:number)=>Promise<void>;toggleFavorite:(id:string)=>void;notify:(message:string)=>void;signOut:()=>Promise<void>};
 const Context=createContext<StoreContext|null>(null);
@@ -50,9 +51,9 @@ export function StoreProvider({children,initialCatalog}:{children:React.ReactNod
  async function signOut(){if(supabase)await supabase.auth.signOut({scope:'local'});setProfile(null);setItems([]);setFavorites([]);router.push('/')}
  const count=items.reduce((s,i)=>s+i.quantity,0);
  return <Context.Provider value={{products,categories,settings,banners,loading,error,profile,authReady,authError,favorites,reload,requireAuth,changeCart,toggleFavorite,notify,signOut}}>
-  <div className="announcement"><ShieldCheck size={16}/> خصوصيتك أولويتنا <span>تغليف آمن · توصيل إلى المحافظات المتاحة</span></div>
+  <div className="announcement"><ShieldCheck size={16}/> خصوصيتك أولويتنا <span><Package size={15}/> تغليف آمن</span><span><Truck size={16}/> توصيل إلى المحافظات المتاحة</span></div>
   {isDemo&&<div className="demo-strip">وضع المعاينة — المنتجات والأرقام توضيحية، والطلبات الحقيقية غير مفعّلة.</div>}
-  <header className="site-header"><div className="header wrap"><Link className="brand" href="/"><Image src="/assets/logo_official_black.png" alt="الشعار الرسمي للمتجر الأوربي" width={72} height={72} priority/><div><strong>المتجر الأوربي</strong><span>فـي الـعـراق</span></div></Link><nav className="desktop-nav" aria-label="التنقل الرئيسي"><Link href="/" aria-current={pathname==='/'?'page':undefined}>الرئيسية</Link><Link href="/categories" aria-current={pathname==='/categories'?'page':undefined}>جميع الأقسام</Link><Link href="/categories?offers=1">العروض</Link><Link href="/orders" aria-current={pathname.startsWith('/orders')?'page':undefined}>متابعة الطلبات</Link></nav><div className="header-actions"><Link className="header-icon" href="/categories#catalog-search" aria-label="البحث في المتجر" title="البحث"><MagnifyingGlass size={22}/></Link><Link className="header-icon favorites-link" href="/favorites" aria-label="المفضلة" title="المفضلة" aria-current={pathname==='/favorites'?'page':undefined}><Heart size={22} weight={pathname==='/favorites'?'fill':'regular'}/></Link><button className="account-button" aria-label={profile?.name?`حساب ${profile.name}`:'تسجيل الدخول إلى حسابك'} title={profile?.name?`حساب ${profile.name}`:'تسجيل الدخول'} onClick={()=>requireAuth(()=>router.push('/account'))}><User size={21}/><span>{!authReady?'جارٍ استعادة الحساب…':profile?.name||'تسجيل الدخول'}</span></button><Link className="header-icon cart-icon" href="/cart" aria-label={`السلة، ${count} قطع`} aria-current={pathname==='/cart'?'page':undefined}><ShoppingCart size={22}/>{count>0&&<b>{count}</b>}</Link></div></div></header>
+  <StoreHeader count={count} name={profile?.name} authReady={authReady} onAccount={()=>requireAuth(()=>router.push('/account'))}/>
   <main id="main-content">{children}</main>
   <footer className="site-footer"><div className="footer wrap"><div className="footer-brand"><Image src="/assets/logo_official_black.png" alt="" width={56} height={56}/><div><strong>المتجر الأوربي في العراق</strong><p>اختيارات بعناية. خصوصية بكل التفاصيل.</p></div></div><nav aria-label="روابط التسوّق"><h2>تسوّق</h2><Link href="/categories">جميع الأقسام</Link><Link href="/categories?offers=1">العروض</Link><Link href="/favorites">المفضلة</Link></nav><nav aria-label="المساعدة"><h2>المساعدة</h2><Link href="/orders">متابعة الطلبات</Link><Link href="/privacy">الخصوصية والشروط</Link><button onClick={()=>setSupport(true)}>تواصل معنا</button></nav><ul className="footer-trust"><li><ShieldCheck size={18}/>خصوصيتك أولويتنا</li><li><Package size={18}/>تغليف آمن</li><li><Truck size={18}/>توصيل إلى المحافظات المتاحة</li></ul><small>© {new Date().getFullYear()} المتجر الأوربي</small></div></footer>
   <nav className="bottom-nav" aria-label="التنقل الرئيسي">{[{href:'/',label:'الرئيسية',Icon:House},{href:'/categories',label:'الأقسام',Icon:SquaresFour},{href:'/cart',label:'السلة',Icon:ShoppingCart},{href:'/orders',label:'متابعة الطلبات',Icon:Package},{href:'/favorites',label:'المفضلة',Icon:Heart}].map(({href,label,Icon})=><button key={href} className={`${pathname===href?'active':''} ${href==='/cart'?'nav-cart':''}`} onClick={()=>href==='/orders'||href==='/account'?requireAuth(()=>router.push(href)):router.push(href)}><span><Icon size={24} weight={pathname===href?'fill':'regular'}/>{href==='/cart'&&count>0&&<b>{count}</b>}</span>{label}</button>)}</nav>

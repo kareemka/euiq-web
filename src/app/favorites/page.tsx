@@ -13,8 +13,8 @@ function FavoritesContent(){
  const {products,favorites,profile,authReady,authError,loading,error,reload,requireAuth}=useStore();
  const page=usePagedProducts({user:profile?.id,favorites:favorites.join(',')},products.filter(product=>favorites.includes(product.id)),true);
  const saved=page.rows;
- return <div className="wrap page">
-  <div className="page-heading"><span className="eyebrow">اختيارات تعود إليها</span><h1>المفضلة</h1><p>احتفظ بالمنتجات التي أعجبتك، واختر اللون والكمية عندما تكون مستعدًا.</p></div>
+ return <div className="wrap page favorites-page">
+  <div className="page-heading"><h1><Heart size={28}/>المفضلة</h1><p>احتفظ بالمنتجات التي أعجبتك، واختر اللون والكمية عندما تكون مستعدًا.</p></div>
   {!authReady?<div className="page-loading" role="status">جارٍ استعادة حسابك…</div>:
    authError?<div className="empty"><p role="alert">{authError}</p><button className="button" onClick={()=>requireAuth(()=>{})}>إعادة المحاولة</button></div>:
    !profile?<div className="empty"><Heart size={48}/><h2>اختياراتك محفوظة مع حسابك</h2><p>سجّل الدخول لعرض المفضلة ومتابعتها من أي جهاز.</p><button className="button" onClick={()=>requireAuth(()=>{})}>تسجيل الدخول</button></div>:
