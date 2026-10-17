@@ -20,7 +20,7 @@ function FavoritesContent(){
    !profile?<div className="empty"><Heart size={48}/><h2>اختياراتك تبقى محفوظة بحسابك</h2><p>سجّل دخولك حتى تشوف مفضلتك وتتابعها من أي جهاز.</p><button className="button" onClick={()=>requireAuth(()=>{})}>سجّل دخولك</button></div>:
    (loading||page.loading)&&!saved.length?<div className="page-loading" role="status">دا نحمّل المفضلة…</div>:
    (error||page.error)&&!saved.length?<div className="empty"><p role="alert">{error||page.error}</p><button className="button" onClick={()=>{void reload();page.refresh();}}>جرّب مرة ثانية</button></div>:
-   saved.length?<><div className="section-heading"><p className="muted">{favorites.length} منتج بمفضلتك</p><Link href="/categories">شوف بعد <ArrowLeft size={18}/></Link></div><CatalogGrid products={saved}/><InfiniteTrigger hasMore={page.hasMore} loading={page.loading} error={page.error} onMore={page.loadMore}/><p className="fine">دوس على القلب حتى تشيل المنتج من المفضلة. هنا تبين المنتجات المنشورة والمتوفرة.</p></>:
+   saved.length?<><div className="section-heading"><p className="muted">{favorites.length} منتج بمفضلتك</p><Link href="/categories">شوف بعد <ArrowLeft size={18}/></Link></div><CatalogGrid products={saved}/><InfiniteTrigger hasMore={page.hasMore} loading={page.loading} error={page.error} onMore={page.loadMore}/><p className="fine">دوس على القلب حتى تشيل المنتج من المفضلة. هنا تبين المنتجات المنشورة والموجودة.</p></>:
    <div className="empty"><Heart size={48}/><h2>مفضلتك تنتظر اختياراتك</h2><p>دوس على القلب بأي منتج حتى يبين هنا.</p><Link className="button" href="/categories">شوف المنتجات <ArrowLeft size={18}/></Link></div>}
  </div>;
 }

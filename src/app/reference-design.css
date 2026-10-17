@@ -358,11 +358,15 @@ html:has(.mobile-menu[open]){overflow:hidden}
 .media-play{position:absolute;inset:50% auto auto 50%;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#073f43d9;color:#fff;transform:translate(-50%,-50%)}
 .media-video-label{position:absolute;inset:auto 4px 4px auto;padding:1px 5px;border-radius:3px;background:var(--teal);color:#fff;font-size:9px;line-height:1.6}
 .gallery-empty{padding:24px;color:var(--muted);text-align:center}
+.gallery-main{height:min(40vw,440px);aspect-ratio:auto}
+.gallery-main:has(>video){aspect-ratio:auto}
+.gallery-main>video{min-height:0;background:#000;object-fit:contain}
+.gallery-thumbnails{max-height:440px}
 @media(min-width:761px) and (max-width:1100px){.gallery-media{grid-template-columns:60px minmax(0,1fr);gap:9px}.gallery-thumbnail{width:60px;height:60px}.gallery-thumbnails{gap:8px}}
 @media(max-width:760px){
  .gallery-media{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "thumbs";gap:10px}
- .gallery-main{aspect-ratio:1/1}
- .gallery-main:has(>video){aspect-ratio:16/10}
+ .gallery-main{width:100%;height:min(74vw,300px);aspect-ratio:auto}
+ .gallery-main>img,.gallery-main>video{width:100%;height:100%;object-fit:contain}
  .gallery-thumbnails{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scroll-snap-type:x proximity}
  .gallery-thumbnail{width:64px;height:64px;scroll-snap-align:start}
 }

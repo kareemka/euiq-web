@@ -33,7 +33,7 @@ export function validateCartChange(items: CartItem[], products: Product[], varia
  if (!Number.isInteger(quantity)||quantity<0) throw new Error('الكمية مو صحيحة');
  const other=items.filter(i=>i.variant_id!==variantId && product.product_variants.some(v=>v.id===i.variant_id)).reduce((s,i)=>s+i.quantity,0);
  if(other+quantity>2) throw new Error('تگدر تطلب قطعتين بس من نفس المنتج، مهما اختلفت ألوانه.');
- if(quantity>variant.stock_on_hand-variant.reserved) throw new Error('هالكمية مو متوفرة من اللون اللي اخترته.');
+ if(quantity>variant.stock_on_hand-variant.reserved) throw new Error('هالكمية مو موجودة من اللون اللي اخترته.');
 }
 
 // Iraqi month names, as shown on the birth date picker.

@@ -18,7 +18,7 @@ export default function Home(){
   <HeroBanner banners={banners} categories={categories} products={products}/>
   <section className="catalog-section featured-section" aria-labelledby="featured-title">
    <div className="section-heading"><h2 id="featured-title">منتجات تستاهل تشوفها</h2><Link href="/categories">شوف كل المنتجات<ArrowLeft size={17}/></Link></div>
-   {loading?<div className="skeleton-grid" aria-label="دا نحمّل المنتجات">{Array.from({length:5},(_,i)=><div key={i}/>)}</div>:<CatalogGrid products={featured} emptyTitle="هسه ماكو منتجات متوفرة" emptyMessage="ارجع بعدين، يمكن نضيف اختيارات جديدة."/>}
+   {loading?<div className="skeleton-grid" aria-label="دا نحمّل المنتجات">{Array.from({length:5},(_,i)=><div key={i}/>)}</div>:<CatalogGrid products={featured} emptyTitle="هسه ماكو منتجات موجودة" emptyMessage="ارجع بعدين، يمكن نضيف اختيارات جديدة."/>}
   </section>
   <section className="browse-panel" aria-labelledby="browse-title">
    <div className="section-heading"><h2 id="browse-title">دوّر حسب القسم والسعر</h2></div>

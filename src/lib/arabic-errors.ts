@@ -21,7 +21,7 @@ export function validationMessage(validity: ValidityState, label: string, type: 
  if (validity.tooLong) return `أكثر شي تگدر تكتب بهالحقل ${maxLength} أحرف.`;
  if (validity.typeMismatch) return type === 'email' ? 'اكتب بريد إلكتروني صحيح.' : 'اكتب رابط يبدي بـ https://.';
  if (validity.patternMismatch) return type === 'tel' ? 'اكتب رقم تلفون عراقي صحيح.' : 'تأكد من الصيغة اللي كتبتها.';
- if (validity.rangeOverflow || validity.rangeUnderflow) return type === 'date' ? 'اكتب تاريخ ميلاد صحيح. الطلب متاح للي عمره 18 سنة وفوك.' : 'القيمة طالعة عن المجال المسموح.';
+ if (validity.rangeOverflow || validity.rangeUnderflow) return type === 'date' ? 'اكتب تاريخ ميلاد صحيح. ما تگدر تطلب إلا إذا عمرك 18 سنة وفوك.' : 'القيمة طالعة عن المجال المسموح.';
  if (validity.badInput || validity.stepMismatch) return 'اكتب رقم صحيح.';
  return 'تأكد من قيمة هالحقل.';
 }

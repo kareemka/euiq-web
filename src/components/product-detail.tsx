@@ -74,7 +74,7 @@ export default function ProductPage({params,initialProduct}:{params:Promise<{slu
      {product.compare_at_price&&<><del>{money(product.compare_at_price)}</del><span className="discount">وفّر {money(product.compare_at_price-product.price)}</span></>}
     </div>
     <p className={`stock-status ${available>0?'':'soldout'}`}>
-     <Package size={20}/>{available>0?<>متوفر بالمخزون<span>{variant?.color_name?`اللون ${variant.color_name} · `:''}باقي {available} قطع</span></>:'خلصت الكمية لهذا اللون'}
+     <Package size={20}/>{available>0?<>موجود هسه<span>{variant?.color_name?`اللون ${variant.color_name} · `:''}باقي {available} قطع</span></>:'خلصت الكمية لهذا اللون'}
     </p>
     {variants.some(item=>item.color_name)&&<fieldset className="color-options">
      <legend>اختار اللون <span>{variant?.color_name}</span></legend>
@@ -83,7 +83,7 @@ export default function ProductPage({params,initialProduct}:{params:Promise<{slu
       className={`${variant?.id===item.id?'selected':''} ${item.stock_on_hand===item.reserved?'unavailable':''}`}
       aria-pressed={variant?.id===item.id}
       onClick={()=>{setSelection(item.id);setQuantity(1)}}
-     ><i style={{backgroundColor:item.color_hex||'#aaa'}}/><strong>{item.color_name}</strong><small>{item.stock_on_hand-item.reserved>0?`${item.stock_on_hand-item.reserved} متوفر`:'نفد'}</small></button>)}</div>
+     ><i style={{backgroundColor:item.color_hex||'#aaa'}}/><strong>{item.color_name}</strong><small>{item.stock_on_hand-item.reserved>0?`${item.stock_on_hand-item.reserved} موجود`:'خلص'}</small></button>)}</div>
     </fieldset>}
     <div className="quantity-row">
      <div><strong>الكمية</strong><p>تگدر تطلب قطعتين بس من هالمنتج، مهما اختلف اللون</p></div>
