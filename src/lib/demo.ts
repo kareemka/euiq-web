@@ -14,14 +14,14 @@ const entries: [string,string,string,number,string,boolean][] = [
  ['جهاز عناية متطور','devices','عناية شخصية بتصميم عملي.',97000,'8',false]
 ];
 export const demoProducts:Product[]=entries.map(([title,cat,summary,price,img,featured],i)=>({
- id:'demo-'+(i+1),category_id:cat,title,summary,details:'هذا منتج توضيحي لمعاينة التصميم. تُضاف المواصفات والصور الأصلية من تطبيق إدارة المتجر قبل النشر.',material:'يُحدّد من الإدارة',origin:'يُحدّد من الإدارة',price,compare_at_price:i>3?Math.round(price*1.3):null,
+ id:'demo-'+(i+1),category_id:cat,title,summary,details:'هذا المنتج للمعاينة بس. المتجر يضيف الصور والمواصفات الأصلية من تطبيق الإدارة.',material:'يضيفها المتجر',origin:'يحددها المتجر',price,compare_at_price:i>3?Math.round(price*1.3):null,
  images:[`/assets/product-${img}.webp`],video_url:null,featured,
  product_variants:[{id:`demo-${i+1}-black`,product_id:'demo-'+(i+1),color_name:'أسود',color_hex:'#202322',stock_on_hand:5,reserved:0,active:true},{id:`demo-${i+1}-red`,product_id:'demo-'+(i+1),color_name:'أحمر',color_hex:'#a62b36',stock_on_hand:10,reserved:0,active:true},{id:`demo-${i+1}-teal`,product_id:'demo-'+(i+1),color_name:'فيروزي',color_hex:'#006c73',stock_on_hand:0,reserved:0,active:true}]
 }));
 export const demoBanners:Banner[]=[
- {id:'demo-banner',title:'خصوصيتك، تستحق عناية خاصة.',subtitle:'منتجات مختارة لحياة زوجية أفضل، وتسوّق براحة من منزلك.',image_url:'/assets/hero-still.webp',target_category_id:null},
+ {id:'demo-banner',title:'خصوصيتك تهمنا، وطلبك يوصل بتغليف يحفظها.',subtitle:'اختار اللي يعجبك واطلبه وإنت مرتاح.',image_url:'/assets/hero-still.webp',target_category_id:null},
  {id:'demo-banner-product',title:'هدية تليق بلحظاتكما الخاصة.',subtitle:'مجموعة رومانسية فاخرة بتغليف أنيق يحفظ خصوصيتك.',image_url:'/assets/banners/privacy-gift.png',target_category_id:null,target_product_id:'demo-2'},
- {id:'demo-banner-category',title:'عناية يومية تصلك بتغليف سري.',subtitle:'تصفّح منتجات العناية، وتصلك حتى باب منزلك دون أي إشارة.',image_url:'/assets/banners/discreet-delivery.png',target_category_id:'care'}
+ {id:'demo-banner-category',title:'اختياراتك توصلك بتغليف يحفظ خصوصيتك.',subtitle:'شوف منتجات العناية، وتوصلك لباب البيت بدون أي إشارة.',image_url:'/assets/banners/discreet-delivery.png',target_category_id:'care'}
 ];
 export const demoSettings:Settings={support_phone:'',whatsapp_phone:'',payment_method:'',checkout_enabled:false,delivery_fees:{},baghdad_hours:24,other_hours:72,cancellation_policy:''};
 // Preview mode has no backend to page through, so the categories page filters the demo catalog in the browser.

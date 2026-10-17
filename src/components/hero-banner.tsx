@@ -5,7 +5,7 @@ import {ArrowLeft,CaretLeft,CaretRight,Pause,Play} from '@phosphor-icons/react';
 import {bannerTarget,bannerDelay} from '@/lib/urls';
 import type {Banner,Category,Product} from '@/lib/types';
 
-const ctaLabel={product:'اطلب الآن',category:'تصفّح القسم',catalog:'اكتشف المنتجات',external:'زيارة الرابط'};
+const ctaLabel={product:'اطلبه هسه',category:'شوف القسم',catalog:'شوف المنتجات',external:'افتح الرابط'};
 
 export function HeroBanner({banners,categories,products}:{banners:Banner[];categories:Category[];products:Product[]}){
  const [position,setPosition]=useState(0),[paused,setPaused]=useState(false),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false),[hidden,setHidden]=useState(false),[reducedMotion,setReducedMotion]=useState(false);
@@ -27,20 +27,21 @@ export function HeroBanner({banners,categories,products}:{banners:Banner[];categ
   return()=>window.clearTimeout(timer);
  },[rotating,count,position,banner?.id,banner?.display_seconds]);
  const move=(direction:number)=>setPosition(i=>(i+direction+count)%count);
+ if(!count)return null;
  return <section className="hero-carousel" role="region" aria-roledescription="عرض شرائح" aria-label="بنرات المتجر"
   onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
   onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node|null))setFocused(false);}}
   onTouchStart={event=>{touch.current=event.touches[0].clientX;}}
   onTouchEnd={event=>{if(touch.current===null||count<2)return;const delta=event.changedTouches[0].clientX-touch.current;touch.current=null;if(Math.abs(delta)>45)move(delta>0?1:-1);}}
   onKeyDown={event=>{if(event.target!==event.currentTarget||count<2)return;if(event.key==='ArrowLeft'){event.preventDefault();move(1);}if(event.key==='ArrowRight'){event.preventDefault();move(-1);}}} tabIndex={0}>
-  <div className="hero-slide" key={banner?.id??'default'} aria-roledescription={count>1?'شريحة':undefined} aria-label={count>1?`${index+1} من ${count}`:undefined}>
-   <img className="hero-image" src="/assets/hero-reference-v2.webp" width={1536} height={1024} alt="" fetchPriority="high"/>
+  <div className="hero-slide" key={banner.id} aria-roledescription={count>1?'شريحة':undefined} aria-label={count>1?`${index+1} من ${count}`:undefined}>
+   {banner.image_url&&<img className="hero-image" src={banner.image_url} width={2095} height={751} alt="" fetchPriority={index===0?'high':'auto'}/>}
    {/* The whole banner opens its destination; the visible button below is the keyboard and screen-reader route to the same link. */}
    <Link className="hero-hit" href={target.href} {...externalProps} tabIndex={-1} aria-hidden="true"/>
    <div className="hero-copy" aria-live={rotating?'off':'polite'} aria-atomic="true">
     {label&&<span className="hero-category">{label}</span>}
-    <h1>{(banner?.title??'خصوصية تامة، واختيار بعناية.').split(/([0-9٠-٩]+[٪%])/).map((part,i)=>/[٪%]/.test(part)?<em key={i}>{part}</em>:part)}</h1>
-    <p>{banner?.subtitle??'منتجات مختارة لحياة زوجية أفضل، وتسوّق براحة من منزلك.'}</p>
+    <h1>{banner.title.split(/([0-9٠-٩]+[٪%])/).map((part,i)=>/[٪%]/.test(part)?<em key={i}>{part}</em>:part)}</h1>
+    {banner.subtitle&&<p>{banner.subtitle}</p>}
     <Link href={target.href} {...externalProps} className="button hero-cta">{ctaLabel[target.kind]}<ArrowLeft size={20}/></Link>
    </div>
   </div>

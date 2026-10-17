@@ -4,10 +4,10 @@ import type {Category,Product,Settings,Banner} from './types';
 export async function getCatalog():Promise<{products:Product[];categories:Category[];settings:Settings;banners:Banner[]}> {
  if(!supabase) {
   if(isDemo) return {products:demoProducts,categories:demoCategories,settings:demoSettings,banners:demoBanners};
-  throw new Error('تعذر الاتصال بالمتجر، يرجى المحاولة لاحقًا');
+  throw new Error('ما گدرنا نتصل بالمتجر. جرّب مرة ثانية بعدين.');
  }
  const {data,error}=await supabase.rpc('catalog_page');
- if(error)throw new Error('تعذر تحميل المتجر، حاول مرة أخرى');
+ if(error)throw new Error('ما گدرنا نحمّل المتجر. جرّب مرة ثانية.');
  return data as {products:Product[];categories:Category[];settings:Settings;banners:Banner[]};
 }
 

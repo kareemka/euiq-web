@@ -17,6 +17,6 @@ export function BirthDateField({defaultValue,hint}:{defaultValue?:string|null;hi
    <select aria-label="سنة الميلاد" required value={year||''} onChange={e=>{const next=Number(e.target.value);setYear(next);if(month)setDay(d=>Math.min(d,daysInMonth(next,month)));}}><option value="">السنة</option>{years.map(y=><option key={y} value={y}>{y}</option>)}</select>
   </div>
   <input type="hidden" name="birth_date" value={value}/>
-  {underage?<small id={`${id}-hint`} className="field-error" role="alert">الشراء متاح لمن أتمّ 18 سنة فقط. راجع تاريخ الميلاد.</small>:<small id={`${id}-hint`} className="field-hint">{hint}</small>}
+  {underage?<small id={`${id}-hint`} className="field-error" role="alert">الطلب متاح للي عمره 18 سنة وفوك. تأكد من تاريخ ميلادك.</small>:<small id={`${id}-hint`} className="field-hint">{hint}</small>}
  </fieldset>;
 }
