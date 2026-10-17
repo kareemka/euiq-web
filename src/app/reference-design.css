@@ -119,8 +119,8 @@ html:has(.mobile-menu[open]){overflow:hidden}
 .footer{padding-block:32px 20px;gap:24px}
 .footer small{color:#c0d6d0}
 /* Category board: shallow photographic heading, category tiles and a left filter rail. */
-.catalog-intro{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;min-height:180px;margin:-32px -32px 0;padding:28px 44px;background:#f6f0e4 url('/assets/hero-reference-v2.webp') center/cover;text-align:center}
-.catalog-intro h1,.catalog-intro p{width:56%;color:var(--teal)}
+.catalog-intro{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:0;margin:0 0 18px;padding:0;background:none;text-align:start}
+.catalog-intro h1,.catalog-intro p{width:100%;color:var(--teal)}
 .catalog-intro h1{font-size:33px}
 .catalog-intro p{font-size:14px;max-width:none}
 .catalog-page>.reference-categories{position:relative;margin-top:-8px;padding:10px;border-radius:9px;background:#fff;box-shadow:0 2px 7px #213c3910}
@@ -248,10 +248,10 @@ html:has(.mobile-menu[open]){overflow:hidden}
  .section-heading h2,.browse-head h2{font-size:18px}
  .section-heading>a{font-size:10px;gap:4px;min-height:44px}
  .section-heading>a svg{width:14px}
- .home .product-grid,.home .skeleton-grid,.product-grid,.skeleton-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
- .product-copy{padding:9px 10px 11px}
- .product-name{font-size:12px;line-height:1.75;min-height:3.5em}
- .price-row strong{font-size:15px}
+ .home .product-grid,.home .skeleton-grid,.product-grid,.skeleton-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+ .product-copy{padding:8px 7px 9px}
+ .product-name{font-size:11px;line-height:1.65;min-height:3.3em}
+ .price-row strong{font-size:13px}
  .price-row del{font-size:10px}
  .product-meta{display:flex;margin-block:4px;min-height:18px;gap:4px}
  .availability{font-size:10px}
@@ -261,7 +261,6 @@ html:has(.mobile-menu[open]){overflow:hidden}
  .favorite svg{width:17px;height:17px}
  .product-cta{display:flex;font-size:11px;min-height:44px;gap:5px}
  .home .product-cta{display:none}
- .home .product-grid>.product-card:last-child:nth-child(odd){display:none}
  .browse-panel{padding:0;margin-top:24px}
  .browse-panel>.section-heading{margin-bottom:4px}
  .browse-layout{grid-template-columns:1fr;gap:14px}
@@ -292,10 +291,10 @@ html:has(.mobile-menu[open]){overflow:hidden}
  .bottom-nav{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
  .bottom-nav>button{font-size:10px}
  .support-trigger{border:0;box-shadow:0 2px 7px #073f4320}
- .catalog-intro{min-height:max(135px,35.85vw);margin:-20px -16px 0;padding:18px 12px;background-position:62% top;background-size:100% auto;background-repeat:no-repeat}
- .catalog-intro h1,.catalog-intro p{width:61%;margin-inline-start:auto}
- .catalog-intro h1{font-size:25px}
- .catalog-intro p{font-size:11px;line-height:1.8}
+ .catalog-intro{min-height:0;margin:0 0 14px;padding:0}
+ .catalog-intro h1,.catalog-intro p{width:100%;margin-inline-start:0}
+ .catalog-intro h1{font-size:23px}
+ .catalog-intro p{font-size:12px;line-height:1.8}
  .catalog-page>.reference-categories{padding:6px;gap:6px;margin-top:-3px}
  .catalog-page>.reference-categories>button{flex-direction:column;min-height:76px;font-size:10px}
  .catalog-toolbar{margin-top:14px;gap:8px}
@@ -329,11 +328,14 @@ html:has(.mobile-menu[open]){overflow:hidden}
  .brand strong{font-size:11px}
  .brand span{display:none}
  .brand img{width:34px;height:34px}
- .product-grid,.skeleton-grid{grid-template-columns:1fr}
- .home .product-grid,.home .skeleton-grid{grid-template-columns:1fr}
- .home .product-grid>.product-card:last-child:nth-child(odd){display:flex}
- .product-name{font-size:14px}
- .price-row strong{font-size:17px}
+ .product-grid,.skeleton-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 6px}
+ .home .product-grid,.home .skeleton-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .product-copy{padding:7px 5px 8px}
+ .product-name{font-size:10px;line-height:1.6;min-height:3.2em}
+ .price-row strong{font-size:12px}
+ .product-meta{font-size:9px;gap:3px}
+ .availability{font-size:9px}
+ .product-cta{font-size:10px;padding-inline:4px}
  .product-photo{aspect-ratio:1.25}
  .catalog-intro{margin-inline:-12px}
  .reference-categories>a,.reference-categories>button{font-size:9px}
