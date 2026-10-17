@@ -342,3 +342,28 @@ html:has(.mobile-menu[open]){overflow:hidden}
  .catalog-toolbar .sort-select{min-width:0;width:100%}
 }
 @media(prefers-reduced-motion:reduce){.product-card:hover{transform:none}}
+
+/* Product media stays in one gallery, with a desktop rail and mobile strip. */
+.gallery-media{display:grid;grid-template-columns:72px minmax(0,1fr);grid-template-areas:"thumbs stage";align-items:start;gap:12px;direction:ltr}
+.gallery-main{grid-area:stage;display:grid;place-items:center;aspect-ratio:1/1;touch-action:pan-y}
+.gallery-main:has(>video){aspect-ratio:16/10}
+.gallery-main>img{width:100%;height:100%;object-fit:contain}
+.gallery-main>video{width:100%;height:100%;border-radius:0;background:#000;object-fit:contain}
+.gallery-main:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.gallery-thumbnails{grid-area:thumbs;display:flex;flex-direction:column;gap:10px;max-height:calc(100vw * .48);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.gallery-thumbnail{position:relative;flex:none;width:72px;height:72px;padding:3px;overflow:hidden;border:1px solid var(--line);border-radius:5px;background:var(--card);transition:border-color .18s,box-shadow .18s}
+.gallery-thumbnail:hover{border-color:var(--teal)}
+.gallery-thumbnail.selected{padding:2px;border:2px solid var(--teal)}
+.gallery-thumbnail>img,.gallery-thumbnail-empty{display:block;width:100%;height:100%;border-radius:3px;background:var(--surface);object-fit:cover}
+.media-play{position:absolute;inset:50% auto auto 50%;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#073f43d9;color:#fff;transform:translate(-50%,-50%)}
+.media-video-label{position:absolute;inset:auto 4px 4px auto;padding:1px 5px;border-radius:3px;background:var(--teal);color:#fff;font-size:9px;line-height:1.6}
+.gallery-empty{padding:24px;color:var(--muted);text-align:center}
+@media(min-width:761px) and (max-width:1100px){.gallery-media{grid-template-columns:60px minmax(0,1fr);gap:9px}.gallery-thumbnail{width:60px;height:60px}.gallery-thumbnails{gap:8px}}
+@media(max-width:760px){
+ .gallery-media{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "thumbs";gap:10px}
+ .gallery-main{aspect-ratio:1/1}
+ .gallery-main:has(>video){aspect-ratio:16/10}
+ .gallery-thumbnails{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scroll-snap-type:x proximity}
+ .gallery-thumbnail{width:64px;height:64px;scroll-snap-align:start}
+}
+@media(max-width:359px){.gallery-thumbnail{width:56px;height:56px}}
