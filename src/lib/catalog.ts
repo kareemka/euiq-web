@@ -4,7 +4,7 @@ import type {Category,Product,Settings,Banner} from './types';
 type Storefront='adult'|'market';
 export async function getCatalog(storefront:Storefront='adult'):Promise<{products:Product[];categories:Category[];settings:Settings;banners:Banner[]}> {
  if(!supabase) {
-  if(isDemo) return {products:demoProducts.filter(p=>(p as Product & {storefront?:string}).storefront===storefront||storefront==='adult'),categories:demoCategories,settings:demoSettings,banners:demoBanners};
+  if(isDemo) return {products:demoProducts.filter(p=>(p.storefront??'adult')===storefront),categories:demoCategories.filter(c=>(c.storefront??'adult')===storefront),settings:demoSettings,banners:demoBanners.filter(b=>(b.storefront??'adult')===storefront)};
   throw new Error('ما گدرنا نتصل بالمتجر. جرّب مرة ثانية بعدين.');
  }
  const {data,error}=await supabase.rpc('catalog_page_for_store',{p_storefront:storefront});
