@@ -8,7 +8,7 @@ import {List,X,MagnifyingGlass,ShoppingCart,Heart,User,ArrowLeft,House,SquaresFo
 
 const links=[{href:'/',label:'الرئيسية',Icon:House},{href:'/categories',label:'كل الأقسام',Icon:SquaresFour},{href:'/categories?offers=1',label:'العروض',Icon:Tag},{href:'/orders',label:'شوف طلباتك',Icon:Package},{href:'/favorites',label:'المفضلة',Icon:Heart}];
 
-export function StoreHeader({count,name,authReady,onAccount}:{count:number;name?:string;authReady:boolean;onAccount:()=>void}){
+export function StoreHeader({count,name,authReady,isMarket=false,onAccount}:{count:number;name?:string;authReady:boolean;isMarket?:boolean;onAccount:()=>void}){
  const pathname=usePathname(),params=useSearchParams();
  const [open,setOpen]=useState(false);
  const menu=useRef<HTMLDialogElement>(null);
@@ -19,7 +19,7 @@ export function StoreHeader({count,name,authReady,onAccount}:{count:number;name?
   <header className="site-header">
    <div className="header wrap">
     <button className="header-icon menu-trigger" aria-label="افتح قائمة المتجر" aria-haspopup="dialog" aria-expanded={open} onClick={()=>setOpen(true)}><List size={24}/></button>
-    <Link className="brand" href="/" aria-label="المتجر الأوربي، الرئيسية"><Image src="/assets/logo_official_black.png" alt="شعار المتجر الأوربي" width={72} height={72} priority/><div><strong>المتجر الأوربي في العراق</strong><span>اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.</span></div></Link>
+    <Link className="brand" href="/" aria-label={isMarket?'EUIQ Market، الرئيسية':'المتجر الأوربي، الرئيسية'}><Image src={isMarket?'/market-icon.svg':'/assets/logo_official_black.png'} alt={isMarket?'شعار EUIQ Market':'شعار المتجر الأوربي'} width={72} height={72} priority/><div><strong>{isMarket?'EUIQ Market':'المتجر الأوربي في العراق'}</strong><span>{isMarket?'منتجات مختارة، بتجربة تسوّق أسهل.':'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</span></div></Link>
     <form action="/categories" className="search-bar header-search" role="search" aria-label="البحث في المتجر"><input type="search" name="q" aria-label="اسم المنتج أو شوية من وصفه" placeholder="دوّر على المنتج اللي تريده…"/><button aria-label="دوّر بالمتجر"><MagnifyingGlass size={22}/></button></form>
     <div className="header-actions">
      <Link className="header-icon favorites-link" href="/favorites" aria-label="المفضلة" aria-current={pathname==='/favorites'?'page':undefined}><Heart size={23}/></Link>
@@ -30,9 +30,9 @@ export function StoreHeader({count,name,authReady,onAccount}:{count:number;name?
    <div className="header-navigation"><div className="wrap navigation-row"><nav className="desktop-nav" aria-label="القائمة الرئيسية">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined}><link.Icon size={18}/>{link.label}</Link>)}</nav><span className="nav-assurance">اختار براحتك وخصوصيتك محفوظة</span></div></div>
   </header>
   <dialog ref={menu} className="mobile-menu" aria-labelledby="menu-title" onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget)setOpen(false)}}>
-   <div className="filter-sheet-head"><h2 id="menu-title">المتجر الأوربي</h2><button className="icon-button" aria-label="سد القائمة" onClick={()=>setOpen(false)}><X size={23}/></button></div>
+   <div className="filter-sheet-head"><h2 id="menu-title">{isMarket?'EUIQ Market':'المتجر الأوربي'}</h2><button className="icon-button" aria-label="سد القائمة" onClick={()=>setOpen(false)}><X size={23}/></button></div>
    <nav aria-label="قائمة المتجر">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined} onClick={()=>setOpen(false)}>{link.label}<ArrowLeft size={18}/></Link>)}<Link href="/account" onClick={e=>{e.preventDefault();setOpen(false);onAccount()}}>حسابي<User size={20}/></Link><Link href="/privacy" onClick={()=>setOpen(false)}>الخصوصية والشروط<ArrowLeft size={18}/></Link></nav>
-   <p>اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.</p>
+   <p>{isMarket?'منتجات مختارة، بتجربة تسوّق أسهل.':'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</p>
   </dialog>
  </>;
 }
