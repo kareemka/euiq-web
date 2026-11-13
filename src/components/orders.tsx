@@ -11,13 +11,13 @@ import {demoOrders} from '@/lib/demo';
 import {arabicError} from '@/lib/arabic-errors';
 import {money,statuses,statusTones,completeProfile} from '@/lib/domain';
 import type {Order} from '@/lib/types';
-export function Orders({slug}:{slug?:string}){const {profile}=useStore();return <OrdersContent key={(profile?.id??'guest')+(slug??'')} slug={slug}/>;}
-function OrdersContent({slug}:{slug?:string}){const id=slug?decodeSlug(slug):undefined;const router=useRouter();const {profile,authReady,authError,requireAuth}=useStore();const [orders,setOrders]=useState<Order[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[now,setNow]=useState(0),[offset,setOffset]=useState(0),[revision,setRevision]=useState(0);
+export function Orders({slug}:{slug?:string}){const {profile,storefront}=useStore();return <OrdersContent key={(profile?.id??'guest')+storefront+(slug??'')} slug={slug}/>;}
+function OrdersContent({slug}:{slug?:string}){const id=slug?decodeSlug(slug):undefined;const router=useRouter();const {profile,storefront,authReady,authError,requireAuth}=useStore();const [orders,setOrders]=useState<Order[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[now,setNow]=useState(0),[offset,setOffset]=useState(0),[revision,setRevision]=useState(0);
  const [hasMore,setHasMore]=useState(false),[loadingMore,setLoadingMore]=useState(false),[moreError,setMoreError]=useState('');
  const rowsRef=useRef(orders),pageOffset=useRef(0),moreBusy=useRef(false),generation=useRef(0);
  useEffect(()=>{rowsRef.current=orders;},[orders]);
  const invalidate=useCallback(()=>{generation.current++;moreBusy.current=false;},[]);
- const loadMore=useCallback(()=>{if(!supabase||id||moreBusy.current||!hasMore)return;const version=generation.current;moreBusy.current=true;setLoadingMore(true);setMoreError('');void(async()=>{try{const r=await supabase!.rpc('list_orders_page',{p_limit:20,p_offset:pageOffset.current});if(r.error)throw r.error;if(version!==generation.current)return;const next=r.data as Order[];pageOffset.current+=next.length;setOrders(current=>[...current,...next.filter(o=>!current.some(x=>x.id===o.id))]);setHasMore(next.length===20);}catch(e){if(version===generation.current)setMoreError(arabicError(e));}finally{moreBusy.current=false;if(version===generation.current)setLoadingMore(false);}})();},[id,hasMore]);
+ const loadMore=useCallback(()=>{if(!supabase||id||moreBusy.current||!hasMore)return;const version=generation.current;moreBusy.current=true;setLoadingMore(true);setMoreError('');void(async()=>{try{const r=await supabase!.rpc('list_orders_page',{p_limit:20,p_offset:pageOffset.current,p_filters:{storefront}});if(r.error)throw r.error;if(version!==generation.current)return;const next=r.data as Order[];pageOffset.current+=next.length;setOrders(current=>[...current,...next.filter(o=>!current.some(x=>x.id===o.id))]);setHasMore(next.length===20);}catch(e){if(version===generation.current)setMoreError(arabicError(e));}finally{moreBusy.current=false;if(version===generation.current)setLoadingMore(false);}})();},[id,hasMore,storefront]);
  useEffect(()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{
   if(!completeProfile(profile)||!supabase)return;
@@ -26,7 +26,7 @@ function OrdersContent({slug}:{slug?:string}){const id=slug?decodeSlug(slug):und
    if(disposed||inFlight||moreBusy.current)return;inFlight=true;
    try {
     const target=id?1:Math.max(20,rowsRef.current.length),batches:Order[]=[];let more=false;
-    for(let start=0;start<target;start+=20){const r=id?await supabase!.rpc('order_by_slug',{p_slug:id}):await supabase!.rpc('list_orders_page',{p_limit:20,p_offset:start});if(r.error)throw r.error;const rows=r.data as Order[];batches.push(...rows);more=!id&&rows.length===20;if(!more)break;}
+    for(let start=0;start<target;start+=20){const r=id?await supabase!.rpc('order_by_slug_for_store',{p_slug:id,p_storefront:storefront}):await supabase!.rpc('list_orders_page',{p_limit:20,p_offset:start,p_filters:{storefront}});if(r.error)throw r.error;const rows=r.data as Order[];batches.push(...rows);more=!id&&rows.length===20;if(!more)break;}
     const r={data:batches,error:null},time=await supabase!.rpc('server_time');
     if(disposed)return;if(r.error)throw r.error;
     if(id&&batches[0]?.slug&&id!==batches[0].slug)router.replace(orderUrl(batches[0]));setOrders(r.data as Order[]);pageOffset.current=batches.length;setHasMore(more);setError('');
@@ -37,7 +37,7 @@ function OrdersContent({slug}:{slug?:string}){const id=slug?decodeSlug(slug):und
   void load();const refresh=setInterval(()=>void load(),30000);
   const ch=supabase.channel('orders-'+(id??'all')).on('postgres_changes',{event:'*',schema:'public',table:'orders',filter:`user_id=eq.${profile!.id}`},()=>void load()).on('postgres_changes',{event:'INSERT',schema:'public',table:'order_events'},()=>void load()).subscribe();
   return()=>{disposed=true;invalidate();clearInterval(refresh);void supabase!.removeChannel(ch)};
- },[profile,id,revision,invalidate,router]);
+ },[profile,id,revision,invalidate,router,storefront]);
  const list=isDemo?demoOrders.filter(o=>!id||o.slug===id):orders;
  const when=(value:string)=>new Date(value).toLocaleString('ar-IQ-u-nu-latn',{timeZone:'Asia/Baghdad',dateStyle:'medium',timeStyle:'short'});
  if(!authReady)return <div className="page-loading" role="status">دا نرجّع حسابك…</div>;

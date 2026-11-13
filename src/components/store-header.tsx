@@ -27,11 +27,11 @@ export function StoreHeader({count,name,authReady,isMarket=false,onAccount}:{cou
      <Link className="header-icon cart-icon" href="/cart" aria-label={`السلة، ${count} قطع`} aria-current={pathname==='/cart'?'page':undefined}><ShoppingCart size={24}/>{count>0&&<b>{count}</b>}</Link>
     </div>
    </div>
-   <div className="header-navigation"><div className="wrap navigation-row"><nav className="desktop-nav" aria-label="القائمة الرئيسية">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined}><link.Icon size={18}/>{link.label}</Link>)}</nav><span className="nav-assurance">اختار براحتك وخصوصيتك محفوظة</span></div></div>
+   <div className="header-navigation"><div className="wrap navigation-row"><nav className="desktop-nav" aria-label="القائمة الرئيسية">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined}><link.Icon size={18}/>{link.label}</Link>)}{isMarket&&<a href="https://euiq.store"><Package size={18}/>منتجات +18</a>}</nav><span className="nav-assurance">اختار براحتك وخصوصيتك محفوظة</span></div></div>
   </header>
   <dialog ref={menu} className="mobile-menu" aria-labelledby="menu-title" onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget)setOpen(false)}}>
    <div className="filter-sheet-head"><h2 id="menu-title">{isMarket?'EUIQ Market':'المتجر الأوربي'}</h2><button className="icon-button" aria-label="سد القائمة" onClick={()=>setOpen(false)}><X size={23}/></button></div>
-   <nav aria-label="قائمة المتجر">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined} onClick={()=>setOpen(false)}>{link.label}<ArrowLeft size={18}/></Link>)}<Link href="/account" onClick={e=>{e.preventDefault();setOpen(false);onAccount()}}>حسابي<User size={20}/></Link><Link href="/privacy" onClick={()=>setOpen(false)}>الخصوصية والشروط<ArrowLeft size={18}/></Link></nav>
+   <nav aria-label="قائمة المتجر">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined} onClick={()=>setOpen(false)}>{link.label}<ArrowLeft size={18}/></Link>)}{isMarket&&<a href="https://euiq.store" onClick={()=>setOpen(false)}>منتجات +18<Package size={18}/></a>}<Link href="/account" onClick={e=>{e.preventDefault();setOpen(false);onAccount()}}>حسابي<User size={20}/></Link><Link href="/privacy" onClick={()=>setOpen(false)}>الخصوصية والشروط<ArrowLeft size={18}/></Link></nav>
    <p>{isMarket?'منتجات مختارة، بتجربة تسوّق أسهل.':'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</p>
   </dialog>
  </>;

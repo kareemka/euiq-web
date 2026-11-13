@@ -20,6 +20,7 @@ export async function proxy(request:NextRequest) {
    endpoint.searchParams.set('select','slug');
    endpoint.searchParams.set(/^[0-9a-f-]{36}$/i.test(slug)?'id':'slug','eq.'+slug);
    endpoint.searchParams.set('status','eq.published');
+   endpoint.searchParams.set('storefront',`eq.${request.nextUrl.hostname.toLowerCase()==='market.euiq.store'?'market':'adult'}`);
    const result=await fetch(endpoint,{headers:{apikey:key,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(8000)});
    if(result.ok){
     const products=await result.json();

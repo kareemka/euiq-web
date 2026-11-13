@@ -14,12 +14,12 @@ import {isDemo} from '@/lib/supabase';
 import {demoCatalogPage} from '@/lib/demo';
 export default function Page(){return <Suspense fallback={<div className="page-loading">دا نحمّل الصفحة…</div>}><CategoryRoute/></Suspense>}
 function CategoryRoute(){const params=useSearchParams();return <Categories key={params.toString()}/>}
-function Categories(){const params=useSearchParams();const {products,categories,banners,loading,error,reload}=useStore();const [query,setQuery]=useState(params.get('q')??''),[category,setCategory]=useState(params.get('category')??''),[available,setAvailable]=useState(params.get('available')==='1'),[offers,setOffers]=useState(params.get('offers')==='1'),[sort,setSort]=useState('recommended'),[max,setMax]=useState(params.get('max')??''),[filtersOpen,setFiltersOpen]=useState(false);
+function Categories(){const params=useSearchParams();const {products,categories,banners,storefront,loading,error,reload}=useStore();const [query,setQuery]=useState(params.get('q')??''),[category,setCategory]=useState(params.get('category')??''),[available,setAvailable]=useState(params.get('available')==='1'),[offers,setOffers]=useState(params.get('offers')==='1'),[sort,setSort]=useState('recommended'),[max,setMax]=useState(params.get('max')??''),[filtersOpen,setFiltersOpen]=useState(false);
  const selectedCategory=categories.find(c=>c.id===category||(c.slug??titleSlug(c.title))===category);const router=useRouter();const sheet=useRef<HTMLDialogElement>(null);
  useEffect(()=>{const original=params.get('category');const legacy=categories.find(c=>c.id===original);if(legacy){const next=new URLSearchParams(params.toString());next.set('category',legacy.slug??titleSlug(legacy.title));router.replace('/categories?'+next.toString());}},[categories,params,router]);
  useEffect(()=>{const dialog=sheet.current;if(!dialog)return;if(filtersOpen&&!dialog.open)dialog.showModal();if(!filtersOpen&&dialog.open)dialog.close();},[filtersOpen]);
  useEffect(()=>{if(window.location.hash==='#catalog-search')document.getElementById('catalog-search')?.focus();},[]);
- const remote=usePagedProducts({query,category,available,offers,sort,max},products);
+ const remote=usePagedProducts({query,category,available,offers,sort,max},products,false,storefront);
  const page=isDemo?{...remote,rows:demoCatalogPage(products,{query,category:selectedCategory?.id,available,offers,sort,max}),loading:false,hasMore:false,error:''}:remote;
  const list=page.rows,steps=priceSteps(products.map(p=>p.price));
  const active=[selectedCategory&&{label:selectedCategory.title,clear:()=>setCategory('')},Number(max)>0&&{label:`لحد ${money(Number(max))}`,clear:()=>setMax('')},available&&{label:'الموجود بس',clear:()=>setAvailable(false)},offers&&{label:'العروض بس',clear:()=>setOffers(false)}].filter(f=>!!f);

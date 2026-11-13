@@ -10,8 +10,8 @@ export default function FavoritesPage(){
  const {profile}=useStore();return <FavoritesContent key={profile?.id??'guest'}/>;
 }
 function FavoritesContent(){
- const {products,favorites,profile,authReady,authError,loading,error,reload,requireAuth}=useStore();
- const page=usePagedProducts({user:profile?.id,favorites:favorites.join(',')},products.filter(product=>favorites.includes(product.id)),true);
+ const {products,favorites,profile,storefront,authReady,authError,loading,error,reload,requireAuth}=useStore();
+ const page=usePagedProducts({user:profile?.id,favorites:favorites.join(',')},products.filter(product=>favorites.includes(product.id)),true,storefront);
  const saved=page.rows;
  return <div className="wrap page favorites-page">
   <div className="page-heading"><h1><Heart size={28}/>المفضلة</h1><p>خلي المنتجات اللي عجبتك بالمفضلة، واختار اللون والكمية من تجهز.</p></div>

@@ -5,8 +5,9 @@ import ProductDetail from '@/components/product-detail';
 import {serverCatalog,serverProduct} from '@/lib/server-catalog';
 import {productUrl,decodeSlug} from '@/lib/urls';
 import {absoluteUrl,jsonLd} from '@/lib/seo';
+import {storefrontForHost} from '@/lib/seo';
 type Props={params:Promise<{slug:string}>};
-async function findProduct(params:Props['params']){const {slug}=await params;const catalog=await serverCatalog();return {catalog,product:await serverProduct(decodeSlug(slug))};}
+async function findProduct(params:Props['params']){const {slug}=await params,storefront=storefrontForHost((await headers()).get('host'));const catalog=await serverCatalog(storefront);return {catalog,product:await serverProduct(decodeSlug(slug),storefront)};}
 export async function generateMetadata({params}:Props):Promise<Metadata>{const {product:p}=await findProduct(params);if(!p)return {title:'المنتج مو موجود',robots:{index:false}};const canonical=productUrl(p),host=(await headers()).get('host');return {title:p.title,description:(p.summary||p.details||p.title).slice(0,160),alternates:{canonical:absoluteUrl(canonical,host)},openGraph:{title:p.title,description:p.summary,url:absoluteUrl(canonical,host),images:p.images.map(url=>({url,alt:p.title}))},twitter:{card:'summary_large_image',title:p.title,description:p.summary,images:p.images}};}
 export default async function Page({params}:Props){
  const {catalog,product:p}=await findProduct(params);
