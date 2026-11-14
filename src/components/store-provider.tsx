@@ -5,7 +5,7 @@ import {usePathname,useRouter} from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import {House,SquaresFour,ShoppingCart,Package,Headset,WhatsappLogo,Phone,X,ShieldCheck,ArrowLeft,SignOut,Heart,Truck} from '@phosphor-icons/react';
-import {supabase,isDemo} from '@/lib/supabase';
+import {supabase,isDemo,readSharedSessionIdentity} from '@/lib/supabase';
 import {getCatalog,cartProducts} from '@/lib/catalog';
 import {useCart} from '@/lib/cart';
 import {completeProfile,deliveryGovernorates,isAdult,normalizePhone,validateCartChange} from '@/lib/domain';
@@ -39,6 +39,7 @@ export function StoreProvider({children,initialCatalog,storefront='adult'}:{chil
   finally{setAuthReady(true);}
  },[setItems,storefront]);
  useEffect(()=>{void Promise.resolve().then(reload);void Promise.resolve().then(loadUser).catch(()=>notify('ما گدرنا نحمّل بيانات حسابك'));if(!supabase)return;const refresh=setInterval(()=>void reload(),60000);const {data:{subscription}}=supabase.auth.onAuthStateChange(()=>{setTimeout(()=>void loadUser().catch(()=>notify('ما گدرنا نحمّل الحساب')),0)});const ch=supabase.channel('catalog').on('postgres_changes',{event:'*',schema:'public',table:'product_variants'},()=>void reload()).on('postgres_changes',{event:'*',schema:'public',table:'products'},()=>void reload()).on('postgres_changes',{event:'*',schema:'public',table:'banners'},()=>void reload()).on('postgres_changes',{event:'*',schema:'public',table:'categories'},()=>void reload()).on('postgres_changes',{event:'*',schema:'public',table:'store_settings'},()=>void reload()).subscribe();return()=>{clearInterval(refresh);subscription.unsubscribe();void supabase?.removeChannel(ch)}},[reload,loadUser,notify]);
+ useEffect(()=>{if(!supabase)return;let knownIdentity=readSharedSessionIdentity();const {data:{subscription}}=supabase.auth.onAuthStateChange(()=>{knownIdentity=readSharedSessionIdentity()});const syncWhenVisible=()=>{if(document.visibilityState!=='visible')return;const currentIdentity=readSharedSessionIdentity();if(currentIdentity!==knownIdentity)window.location.reload()};window.addEventListener('focus',syncWhenVisible);document.addEventListener('visibilitychange',syncWhenVisible);return()=>{window.removeEventListener('focus',syncWhenVisible);document.removeEventListener('visibilitychange',syncWhenVisible);subscription.unsubscribe()}},[]);
  useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(''),4000);return()=>clearTimeout(t)},[toast]);
  function requireAuth(action:()=>void){
   if(authReady&&completeProfile(profile)){action();return;}
