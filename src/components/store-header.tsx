@@ -4,7 +4,8 @@ import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {usePathname,useSearchParams} from 'next/navigation';
-import {List,X,MagnifyingGlass,ShoppingCart,Heart,User,ArrowLeft,House,SquaresFour,Tag,Package} from '@phosphor-icons/react';
+import {List,X,MagnifyingGlass,ShoppingCart,Heart,User,ArrowLeft,House,SquaresFour,Tag,Package,ShieldCheck} from '@phosphor-icons/react';
+import {marketBrandName,marketTagline} from '@/lib/seo';
 
 const links=[{href:'/',label:'الرئيسية',Icon:House},{href:'/categories',label:'كل الأقسام',Icon:SquaresFour},{href:'/categories?offers=1',label:'العروض',Icon:Tag},{href:'/orders',label:'شوف طلباتك',Icon:Package},{href:'/favorites',label:'المفضلة',Icon:Heart}];
 
@@ -12,27 +13,40 @@ export function StoreHeader({count,name,authReady,isMarket=false,onAccount}:{cou
  const pathname=usePathname(),params=useSearchParams();
  const [open,setOpen]=useState(false);
  const menu=useRef<HTMLDialogElement>(null);
+ const [ageConfirmationOpen,setAgeConfirmationOpen]=useState(false);
+ const ageConfirmation=useRef<HTMLDialogElement>(null);
  const current=(href:string)=>href.includes('?')?pathname==='/categories'&&params.get('offers')==='1':pathname===href&&!(href==='/categories'&&params.get('offers')==='1');
  useEffect(()=>{const dialog=menu.current;if(!dialog)return;if(open&&!dialog.open)dialog.showModal();if(!open&&dialog.open)dialog.close();},[open]);
+ useEffect(()=>{const dialog=ageConfirmation.current;if(!dialog)return;if(ageConfirmationOpen&&!dialog.open)dialog.showModal();if(!ageConfirmationOpen&&dialog.open)dialog.close();},[ageConfirmationOpen]);
  return <>
   <a className="skip-link" href="#main-content">روح للمحتوى</a>
   <header className="site-header">
    <div className="header wrap">
     <button className="header-icon menu-trigger" aria-label="افتح قائمة المتجر" aria-haspopup="dialog" aria-expanded={open} onClick={()=>setOpen(true)}><List size={24}/></button>
-    <Link className="brand" href="/" aria-label={isMarket?'EUIQ Market، الرئيسية':'المتجر الأوربي، الرئيسية'}><Image src={isMarket?'/market-icon.svg':'/assets/logo_official_black.png'} alt={isMarket?'شعار EUIQ Market':'شعار المتجر الأوربي'} width={72} height={72} priority/><div><strong>{isMarket?'EUIQ Market':'المتجر الأوربي في العراق'}</strong><span>{isMarket?'منتجات مختارة، بتجربة تسوّق أسهل.':'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</span></div></Link>
+    <Link className="brand" href="/" aria-label={isMarket?`${marketBrandName}، الرئيسية`:'المتجر الأوربي، الرئيسية'}><Image src={isMarket?'/assets/esi-logo.jpg':'/assets/logo_official_black.png'} alt={isMarket?'شعار ESI Online Store':'شعار المتجر الأوربي'} width={72} height={72} priority/><div><strong>{isMarket?marketBrandName:'المتجر الأوربي في العراق'}</strong><span>{isMarket?marketTagline:'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</span></div></Link>
     <form action="/categories" className="search-bar header-search" role="search" aria-label="البحث في المتجر"><input type="search" name="q" aria-label="اسم المنتج أو شوية من وصفه" placeholder="دوّر على المنتج اللي تريده…"/><button aria-label="دوّر بالمتجر"><MagnifyingGlass size={22}/></button></form>
     <div className="header-actions">
      <Link className="header-icon favorites-link" href="/favorites" aria-label="المفضلة" aria-current={pathname==='/favorites'?'page':undefined}><Heart size={23}/></Link>
+     {isMarket&&<button type="button" className="adult-category-button" onClick={()=>setAgeConfirmationOpen(true)} aria-haspopup="dialog" aria-expanded={ageConfirmationOpen} aria-label="منتجات +18، تأكيد العمر قبل الانتقال"><Image src="/assets/age-18-category.png" alt="" width={318} height={320}/></button>}
      <button className="account-button" aria-label={name?`حساب ${name}`:'سجّل دخولك لحسابك'} onClick={onAccount}><User size={23}/><span>{!authReady?'دا نرجّع حسابك…':name||'حسابي'}</span></button>
      <Link className="header-icon cart-icon" href="/cart" aria-label={`السلة، ${count} قطع`} aria-current={pathname==='/cart'?'page':undefined}><ShoppingCart size={24}/>{count>0&&<b>{count}</b>}</Link>
     </div>
    </div>
-   <div className="header-navigation"><div className="wrap navigation-row"><nav className="desktop-nav" aria-label="القائمة الرئيسية">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined}><link.Icon size={18}/>{link.label}</Link>)}{isMarket&&<a href="https://euiq.store"><Package size={18}/>منتجات +18</a>}</nav><span className="nav-assurance">اختار براحتك وخصوصيتك محفوظة</span></div></div>
+   <div className="header-navigation"><div className="wrap navigation-row"><nav className="desktop-nav" aria-label="القائمة الرئيسية">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined}><link.Icon size={18}/>{link.label}</Link>)}</nav><span className="nav-assurance">{isMarket?marketTagline:'اختار براحتك وخصوصيتك محفوظة'}</span></div></div>
   </header>
   <dialog ref={menu} className="mobile-menu" aria-labelledby="menu-title" onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget)setOpen(false)}}>
-   <div className="filter-sheet-head"><h2 id="menu-title">{isMarket?'EUIQ Market':'المتجر الأوربي'}</h2><button className="icon-button" aria-label="سد القائمة" onClick={()=>setOpen(false)}><X size={23}/></button></div>
-   <nav aria-label="قائمة المتجر">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined} onClick={()=>setOpen(false)}>{link.label}<ArrowLeft size={18}/></Link>)}{isMarket&&<a href="https://euiq.store" onClick={()=>setOpen(false)}>منتجات +18<Package size={18}/></a>}<Link href="/account" onClick={e=>{e.preventDefault();setOpen(false);onAccount()}}>حسابي<User size={20}/></Link><Link href="/privacy" onClick={()=>setOpen(false)}>الخصوصية والشروط<ArrowLeft size={18}/></Link></nav>
-   <p>{isMarket?'منتجات مختارة، بتجربة تسوّق أسهل.':'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</p>
+   <div className="filter-sheet-head"><h2 id="menu-title">{isMarket?marketBrandName:'المتجر الأوربي'}</h2><button className="icon-button" aria-label="سد القائمة" onClick={()=>setOpen(false)}><X size={23}/></button></div>
+   <nav aria-label="قائمة المتجر">{links.map(link=><Link key={link.href} href={link.href} aria-current={current(link.href)?'page':undefined} onClick={()=>setOpen(false)}>{link.label}<ArrowLeft size={18}/></Link>)}<Link href="/account" onClick={e=>{e.preventDefault();setOpen(false);onAccount()}}>حسابي<User size={20}/></Link><Link href="/privacy" onClick={()=>setOpen(false)}>الخصوصية والشروط<ArrowLeft size={18}/></Link></nav>
+   <p>{isMarket?marketTagline:'اختيارات تناسبك، وخصوصيتك محفوظة بكل خطوة.'}</p>
   </dialog>
+  {isMarket&&<dialog ref={ageConfirmation} className="age-confirmation" aria-labelledby="age-confirmation-title" onClose={()=>setAgeConfirmationOpen(false)}>
+   <div className="age-confirmation-mark" aria-hidden="true"><ShieldCheck size={28}/></div>
+   <h2 id="age-confirmation-title">تأكيد العمر</h2>
+   <p>هل عمرك 18 سنة أو أكثر؟ يلزم تأكيد عمرك قبل الانتقال إلى منتجات +18.</p>
+   <div className="age-confirmation-actions">
+    <button type="button" className="age-confirmation-cancel" onClick={()=>setAgeConfirmationOpen(false)}>لا، أعود إلى ESI</button>
+    <a className="age-confirmation-confirm" href="https://euiq.store">نعم، عمري 18 سنة أو أكثر</a>
+   </div>
+  </dialog>}
  </>;
 }

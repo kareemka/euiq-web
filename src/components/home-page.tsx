@@ -9,13 +9,20 @@ import {CatalogGrid} from './catalog-grid';
 import {CategoryNavigation} from './category-navigation';
 
 export default function Home(){
- const {products,categories,banners,loading,error,reload}=useStore();
+ const {products,categories,banners,loading,error,reload,storefront}=useStore();
  if(error)return <div className="wrap page"><div className="empty"><h1>{error}</h1><button className="button" onClick={()=>void reload()}>جرّب مرة ثانية</button></div></div>;
  const featured=[...products.filter(p=>p.featured),...products.filter(p=>!p.featured)].slice(0,5);
  const offers=products.filter(p=>p.compare_at_price&&p.compare_at_price>p.price);
  const steps=priceSteps(products.map(p=>p.price));
- return <div className="wrap home">
+ const trustStrip=<section className="trust-strip" aria-label="ليش تتسوّق ويانا">
+  <div><ShieldCheck size={32}/><strong>خصوصيتك تهمنا</strong><span>بياناتك وتفاصيل طلبك تبقى محفوظة.</span></div>
+  <div><Package size={32}/><strong>تغليف آمن</strong><span>نغلّف طلبك بطريقة تحفظ خصوصيتك.</span></div>
+  <div><Truck size={32}/><strong>نوصل للمحافظات اللي نخدمها</strong><span>تابع طلبك لحد ما يوصل لبابك.</span></div>
+  <div><Money size={32}/><strong>الدفع من تستلم</strong><span>حاسب كاش من تستلم طلبك.</span></div>
+ </section>;
+ return <div className={`wrap home${storefront==='market'?' market-home':''}`}>
   <HeroBanner banners={banners} categories={categories} products={products}/>
+  {storefront==='market'&&trustStrip}
   <section className="catalog-section featured-section" aria-labelledby="featured-title">
    <div className="section-heading"><h2 id="featured-title">منتجات تستاهل تشوفها</h2><Link href="/categories">شوف كل المنتجات<ArrowLeft size={17}/></Link></div>
    {loading?<div className="skeleton-grid" aria-label="دا نحمّل المنتجات">{Array.from({length:5},(_,i)=><div key={i}/>)}</div>:<CatalogGrid products={featured} emptyTitle="هسه ماكو منتجات موجودة" emptyMessage="ارجع بعدين، يمكن نضيف اختيارات جديدة."/>}
@@ -28,11 +35,6 @@ export default function Home(){
    </div>
   </section>
   {offers.length>0&&<Link href="/categories?offers=1" className="offers-callout"><div className="campaign-art" aria-hidden="true"/><div><h2>عروض حلوة تستاهل تشوفها</h2><p>أسعار أقل على منتجات مختارة، شوف العروض هسه.</p></div><span className="offer-link">شوف العروض<ArrowLeft size={18}/></span></Link>}
-  <section className="trust-strip" aria-label="ليش تتسوّق ويانا">
-   <div><ShieldCheck size={32}/><strong>خصوصيتك تهمنا</strong><span>بياناتك وتفاصيل طلبك تبقى محفوظة.</span></div>
-   <div><Package size={32}/><strong>تغليف آمن</strong><span>نغلّف طلبك بطريقة تحفظ خصوصيتك.</span></div>
-   <div><Truck size={32}/><strong>نوصل للمحافظات اللي نخدمها</strong><span>تابع طلبك لحد ما يوصل لبابك.</span></div>
-   <div><Money size={32}/><strong>الدفع من تستلم</strong><span>حاسب كاش من تستلم طلبك.</span></div>
-  </section>
+  {storefront!=='market'&&trustStrip}
  </div>;
 }
