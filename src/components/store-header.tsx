@@ -17,6 +17,7 @@ export function StoreHeader({count,name,authReady,isMarket=false,onAccount}:{cou
  const ageConfirmation=useRef<HTMLDialogElement>(null);
  const current=(href:string)=>href.includes('?')?pathname==='/categories'&&params.get('offers')==='1':pathname===href&&!(href==='/categories'&&params.get('offers')==='1');
  useEffect(()=>{const dialog=menu.current;if(!dialog)return;if(open&&!dialog.open)dialog.showModal();if(!open&&dialog.open)dialog.close();},[open]);
+ useEffect(()=>{const desktop=window.matchMedia('(min-width: 761px)');const closeMenu=()=>{if(!desktop.matches)return;setOpen(false);if(menu.current?.open)menu.current.close();};desktop.addEventListener('change',closeMenu);closeMenu();return()=>desktop.removeEventListener('change',closeMenu);},[]);
  useEffect(()=>{const dialog=ageConfirmation.current;if(!dialog)return;if(ageConfirmationOpen&&!dialog.open)dialog.showModal();if(!ageConfirmationOpen&&dialog.open)dialog.close();},[ageConfirmationOpen]);
  return <>
   <a className="skip-link" href="#main-content">روح للمحتوى</a>

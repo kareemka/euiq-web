@@ -130,6 +130,13 @@ label textarea{min-height:110px;resize:vertical}
 .desktop-nav a:hover{background:var(--card);color:var(--teal)}
 .desktop-nav a[aria-current=page]{background:var(--soft);color:var(--teal);font-weight:600}
 .header-actions{grid-column:3;grid-row:1;justify-self:end;display:flex;align-items:center;gap:8px}
+.menu-trigger{display:none}
+.mobile-menu{position:fixed;inset-block:0;inset-inline-start:auto;inset-inline-end:0;width:min(360px,90vw);max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:0;border:0;background:var(--card);color:var(--ink);box-shadow:var(--shadow-lg)}
+.mobile-menu::backdrop{background:#102d3180}
+.mobile-menu nav{display:flex;flex-direction:column;padding:12px 22px}
+.mobile-menu nav a{display:flex;align-items:center;justify-content:space-between;min-height:58px;border-bottom:1px solid var(--line);font-size:15px}
+.mobile-menu nav a[aria-current=page]{color:var(--teal);font-weight:700}
+.mobile-menu>p{padding:20px 22px;font-size:13px;color:var(--muted)}
 .header-icon{position:relative;display:inline-grid;place-items:center;width:46px;height:46px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);transition:background-color .18s,border-color .18s,color .18s}
 .header-icon:hover,.header-icon[aria-current=page]{background:var(--soft);border-color:var(--soft-line);color:var(--teal)}
 .cart-icon b,.bottom-nav b{position:absolute;top:-6px;right:-6px;display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border:2px solid var(--paper);border-radius:var(--r-pill);background:var(--teal);color:#fff;font-size:11px;font-weight:700;line-height:1}
@@ -519,6 +526,7 @@ video{width:100%;border-radius:var(--r-md)}
  /* Header */
  .site-header{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none}
  .header{min-height:64px;gap:10px}
+ .menu-trigger{display:grid}
  .desktop-nav,.favorites-link{display:none}
  .brand{gap:9px;min-width:0}
  .brand img{width:42px;height:42px}
@@ -665,6 +673,7 @@ video{width:100%;border-radius:var(--r-md)}
  .quantity-row{gap:10px}
  .quantity-row p{max-width:160px}
 }
+@media(min-width:761px){.mobile-menu{display:none!important}}
 @media(prefers-reduced-motion:reduce){
  *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
  .product-card:hover,.category-chip:hover,.favorite:hover,.account-links a:hover,.button:active{transform:none}
