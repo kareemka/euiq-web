@@ -219,6 +219,7 @@ html[data-storefront="market"] .avatar{background:#f3e9d7;color:var(--gold-ink)}
  html[data-storefront="market"] .wrap{width:calc(100% - 32px)}
  html[data-storefront="market"] .announcement{min-height:28px;font-size:11px}
  html[data-storefront="market"] .announcement span{display:none}
+ html[data-storefront="market"] .announcement .announcement-primary{display:inline-flex;padding-inline:10px}
  html[data-storefront="market"] .header{direction:rtl;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;padding-block:8px 10px;min-height:0}
  html[data-storefront="market"] .menu-trigger{display:grid;grid-column:1;grid-row:1;width:44px}
  html[data-storefront="market"] .brand{direction:rtl;grid-column:2;grid-row:1;justify-self:center;flex-direction:row;gap:7px}
@@ -389,21 +390,21 @@ html[data-storefront="market"] .adult-category-button img{display:block;width:40
 html[data-storefront="market"] .adult-category-button:hover{background:transparent;transform:translateY(-1px)}
 html[data-storefront="market"] .adult-category-button:active{transform:translateY(1px)}
 html[data-storefront="market"] .adult-category-button:focus-visible{outline:3px solid #0ca6a666;outline-offset:3px}
-.media-video-label{position:absolute;inset:auto 4px 4px auto;padding:1px 5px;border-radius:3px;background:var(--teal);color:#fff;font-size:9px;line-height:1.6}
-.gallery-empty{padding:24px;color:var(--muted);text-align:center}
-.gallery-main{height:min(40vw,440px);aspect-ratio:auto}
-.gallery-main:has(>video){aspect-ratio:auto}
-.gallery-main>video{min-height:0;background:#000;object-fit:contain}
-.gallery-thumbnails{max-height:440px}
-@media(min-width:761px) and (max-width:1100px){.gallery-media{grid-template-columns:60px minmax(0,1fr);gap:9px}.gallery-thumbnail{width:60px;height:60px}.gallery-thumbnails{gap:8px}}
+html[data-storefront="market"] .media-video-label{position:absolute;inset:auto 4px 4px auto;padding:1px 5px;border-radius:3px;background:var(--teal);color:#fff;font-size:9px;line-height:1.6}
+html[data-storefront="market"] .gallery-empty{padding:24px;color:var(--muted);text-align:center}
+html[data-storefront="market"] .gallery-main{height:min(40vw,440px);aspect-ratio:auto}
+html[data-storefront="market"] .gallery-main:has(>video){aspect-ratio:auto}
+html[data-storefront="market"] .gallery-main>video{min-height:0;background:#000;object-fit:contain}
+html[data-storefront="market"] .gallery-thumbnails{max-height:440px}
+@media(min-width:761px) and (max-width:1100px){html[data-storefront="market"] .gallery-media{grid-template-columns:60px minmax(0,1fr);gap:9px}html[data-storefront="market"] .gallery-thumbnail{width:60px;height:60px}html[data-storefront="market"] .gallery-thumbnails{gap:8px}}
 @media(max-width:760px){
- .gallery-media{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "thumbs";gap:10px}
- .gallery-main{width:100%;height:min(74vw,300px);aspect-ratio:auto}
- .gallery-main>img,.gallery-main>video{width:100%;height:100%;object-fit:contain}
- .gallery-thumbnails{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scroll-snap-type:x proximity}
- .gallery-thumbnail{width:64px;height:64px;scroll-snap-align:start}
+ html[data-storefront="market"] .gallery-media{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "thumbs";gap:10px}
+ html[data-storefront="market"] .gallery-main{width:100%;height:min(74vw,300px);aspect-ratio:auto}
+ html[data-storefront="market"] .gallery-main>img,html[data-storefront="market"] .gallery-main>video{width:100%;height:100%;object-fit:contain}
+ html[data-storefront="market"] .gallery-thumbnails{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scroll-snap-type:x proximity}
+ html[data-storefront="market"] .gallery-thumbnail{width:64px;height:64px;scroll-snap-align:start}
 }
-@media(max-width:359px){.gallery-thumbnail{width:56px;height:56px}}
+@media(max-width:359px){html[data-storefront="market"] .gallery-thumbnail{width:56px;height:56px}}
 
 /* ESI homepage composition; all live copy and catalog data stay in the shared components. */
 html[data-storefront="market"] .market-home{--section-gap:28px}

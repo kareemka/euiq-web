@@ -54,7 +54,7 @@ export function StoreProvider({children,initialCatalog,storefront='adult'}:{chil
  async function signOut(){if(supabase)await supabase.auth.signOut({scope:'local'});setProfile(null);setItems([]);setFavorites([]);router.push('/')}
  const count=items.reduce((s,i)=>s+i.quantity,0);
  return <Context.Provider value={{products,categories,settings,banners,storefront,loading,error,profile,authReady,authError,favorites,reload,requireAuth,changeCart,toggleFavorite,notify,signOut}}>
-  <div className="announcement"><ShieldCheck size={16}/> خصوصيتك تهمنا <span><Package size={15}/> تغليف آمن</span><span><Truck size={16}/> نوصل للمحافظات اللي نخدمها</span></div>
+  <div className="announcement"><span className="announcement-primary"><ShieldCheck size={16}/>خصوصيتك تهمنا</span><span><Package size={15}/>تغليف آمن</span><span><Truck size={16}/>نوصل للمحافظات اللي نخدمها</span></div>
   {isDemo&&<div className="demo-strip">هاي معاينة، المنتجات والأسعار بيها توضيحية، والطلبات الحقيقية مو مفعّلة.</div>}
   <StoreHeader count={count} name={profile?.name} authReady={authReady} isMarket={storefront==='market'} onAccount={()=>requireAuth(()=>router.push('/account'))}/>
   <main id="main-content">{children}</main>
