@@ -171,9 +171,10 @@ label textarea{min-height:110px;resize:vertical}
 .footer small{grid-column:1/-1;font-size:12px;color:#8fb3ae}
 
 .bottom-nav{display:none}
-.support{position:fixed;left:24px;bottom:24px;z-index:30}
+.support{position:fixed;left:24px;bottom:24px;z-index:30;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .support-trigger{display:grid;place-items:center;width:54px;height:54px;border:1px solid #ffffff80;border-radius:50%;background:var(--teal);color:#fff;box-shadow:0 6px 20px #00464c33}
-.support-panel{position:absolute;left:0;bottom:66px;width:260px;padding:20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);box-shadow:var(--shadow-md)}
+.whatsapp-fab{display:grid;place-items:center;width:54px;height:54px;border:1px solid #ffffff80;border-radius:50%;background:#138d55;color:#fff;box-shadow:0 6px 20px #00464c33}
+.support-panel{position:absolute;left:0;bottom:120px;width:260px;padding:20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);box-shadow:var(--shadow-md)}
 .support-panel a{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--soft);color:var(--teal);font-weight:600}
 .support-panel p{margin-top:10px;font-size:14px;color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:24px;z-index:60;display:flex;align-items:center;gap:20px;padding:14px 20px;border-radius:var(--r-md);background:#153e40;color:#fff;font-size:14px;box-shadow:var(--shadow-md);transform:translateX(-50%)}
@@ -592,9 +593,9 @@ video{width:100%;border-radius:var(--r-md)}
  .bottom-nav .active>span{background:var(--soft)}
  .bottom-nav b{top:-4px;right:6px}
  .support{left:12px;bottom:calc(80px + env(safe-area-inset-bottom))}
- .support-trigger{width:46px;height:46px}
+ .support-trigger,.whatsapp-fab{width:46px;height:46px}
  .support-trigger svg{width:22px;height:22px}
- .support-panel{bottom:56px;width:min(280px,calc(100vw - 24px))}
+ .support-panel{bottom:108px;width:min(280px,calc(100vw - 24px))}
  .toast{left:12px;right:12px;bottom:calc(80px + env(safe-area-inset-bottom));flex-wrap:wrap;gap:8px 14px;padding:12px 16px;font-size:14px;transform:none}
 
  /* Dialogs */
@@ -643,23 +644,24 @@ video{width:100%;border-radius:var(--r-md)}
  .editorial-banner>div{flex:1 1 200px}
  .editorial-banner .button{flex:1 1 40%;min-height:46px;padding-inline:12px;font-size:14px}
 
- /* Two readable products per row, retaining stock, prices and actions. */
- .product-grid,.skeleton-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}
+ /* Three compact product cards per row on phones. */
+ .product-grid,.skeleton-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 8px}
  .product-card{border-radius:12px}
  .product-card:hover{transform:none}
- .product-copy{padding:12px}
- .product-category{font-size:11px}
- .product-name{min-height:3.4em;font-size:14px;line-height:1.7}
- .price-row{gap:2px 8px;margin-top:6px}
- .price-row strong{font-size:17px}
- .price-row del{font-size:12px}
- .product-meta{display:flex;flex-wrap:wrap;margin:8px 0 12px;gap:6px}
- .product-cta{display:flex;min-height:44px;font-size:13px;gap:6px}
+ .product-copy{padding:8px 7px 9px}
+ .product-category{font-size:10px}
+ .product-name{min-height:3.3em;font-size:11px;line-height:1.65}
+ .price-row{gap:2px 4px;margin-top:4px}
+ .price-row strong{font-size:13px}
+ .price-row del{font-size:10px}
+ .product-meta{display:flex;flex-wrap:wrap;margin:4px 0 8px;gap:4px}
+ .availability{font-size:10px;gap:4px}
+ .product-cta{display:flex;min-height:40px;font-size:11px;gap:5px}
  .product-cta>svg:last-child{display:none}
- .favorite{top:8px;bottom:auto;inset-inline-end:8px;width:44px;height:44px}
- .favorite svg{width:21px;height:21px}
- .badges{top:10px;inset-inline-start:8px;gap:4px}
- .badges :is(.discount,.soldout-badge){padding:2px 7px;font-size:11px}
+ .favorite{top:4px;bottom:auto;inset-inline-end:4px;width:34px;height:34px}
+ .favorite svg{width:17px;height:17px}
+ .badges{top:5px;inset-inline-start:5px;gap:3px}
+ .badges :is(.discount,.soldout-badge){padding:2px 4px;font-size:9px}
 
  /* Catalog */
  .catalog-toolbar{flex-wrap:wrap;gap:8px}

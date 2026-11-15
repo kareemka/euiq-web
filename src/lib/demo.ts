@@ -23,7 +23,7 @@ export const demoBanners:Banner[]=[
  {id:'demo-banner-product',storefront:'adult',title:'هدية تليق بلحظاتكما الخاصة.',subtitle:'مجموعة رومانسية فاخرة بتغليف أنيق يحفظ خصوصيتك.',image_url:'/assets/banners/privacy-gift.png',target_category_id:null,target_product_id:'demo-2'},
  {id:'demo-banner-category',storefront:'adult',title:'اختياراتك توصلك بتغليف يحفظ خصوصيتك.',subtitle:'شوف منتجات العناية، وتوصلك لباب البيت بدون أي إشارة.',image_url:'/assets/banners/discreet-delivery.png',target_category_id:'care'}
 ];
-export const demoSettings:Settings={support_phone:'',whatsapp_phone:'',payment_method:'',checkout_enabled:false,delivery_fees:{},baghdad_hours:24,other_hours:72,cancellation_policy:''};
+export const demoSettings:Settings={support_phone:'',whatsapp_phone:'',adult_whatsapp_phone:'',market_whatsapp_phone:'',payment_method:'',checkout_enabled:false,delivery_fees:{},baghdad_hours:24,other_hours:72,cancellation_policy:''};
 // Preview mode has no backend to page through, so the categories page filters the demo catalog in the browser.
 export function demoCatalogPage(products:Product[],filters:{query:string;category?:string;available:boolean;offers:boolean;sort:string;max:string}){
  const query=filters.query.trim(),max=Number(filters.max);

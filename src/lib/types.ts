@@ -3,7 +3,7 @@ export type Product = { id: string; slug?: string; storefront?: 'adult'|'market'
 export type Category = { id: string; slug?: string; storefront?: 'adult'|'market'; title: string; image_url?: string; icon: string; sort_order: number };
 // A banner opens one destination chosen in the admin app: a product, a category, or (neither set) the full catalog.
 export type Banner = { id: string; storefront?: 'adult'|'market'; title: string; subtitle: string; image_url: string | null; target_category_id: string | null; target_product_id?: string | null; target_product_slug?: string | null; external_url?: string | null; display_seconds?: number | null };
-export type Settings = { support_phone: string; whatsapp_phone: string; payment_method: string; checkout_enabled: boolean; delivery_fees: Record<string,number>; governorate_discounts?: Record<string,number>; baghdad_hours: number; other_hours: number; cancellation_policy: string };
+export type Settings = { support_phone: string; whatsapp_phone: string; adult_whatsapp_phone?: string; market_whatsapp_phone?: string; payment_method: string; checkout_enabled: boolean; delivery_fees: Record<string,number>; governorate_discounts?: Record<string,number>; baghdad_hours: number; other_hours: number; cancellation_policy: string };
 export type Profile = { id: string; name: string; phone: string; backup_phone: string | null; governorate: string; district: string; address_details: string; birth_date: string | null; privacy_accepted_at: string | null };
 export type CartItem = { variant_id: string; quantity: number };
 export type CatalogData = {products:Product[];categories:Category[];settings:Settings;banners:Banner[]};
