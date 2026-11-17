@@ -1,6 +1,7 @@
 import {NextRequest,NextResponse} from 'next/server';
 import {createServerClient,type CookieOptions} from '@supabase/ssr';
 import {contentSecurityPolicy} from './lib/security';
+import {storefrontForHost} from './lib/seo';
 
 export async function proxy(request:NextRequest) {
  const nonce=Buffer.from(crypto.randomUUID()).toString('base64');
@@ -43,7 +44,7 @@ export async function proxy(request:NextRequest) {
    endpoint.searchParams.set('select','slug');
    endpoint.searchParams.set(/^[0-9a-f-]{36}$/i.test(slug)?'id':'slug','eq.'+slug);
    endpoint.searchParams.set('status','eq.published');
-   endpoint.searchParams.set('storefront',`eq.${request.nextUrl.hostname.toLowerCase()==='market.euiq.store'?'market':'adult'}`);
+   endpoint.searchParams.set('storefront',`eq.${storefrontForHost(request.nextUrl.hostname)}`);
    const result=await fetch(endpoint,{headers:{apikey:key,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(8000)});
    if(result.ok){
     const products=await result.json();

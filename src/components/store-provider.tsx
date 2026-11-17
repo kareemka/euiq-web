@@ -3,8 +3,7 @@ import {arabicError} from '@/lib/arabic-errors';
 import {createContext,useContext,useEffect,useState,useRef,useCallback} from 'react';
 import {usePathname,useRouter} from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import {House,SquaresFour,ShoppingCart,Package,Headset,WhatsappLogo,Phone,X,ShieldCheck,ArrowLeft,SignOut,Heart,Truck} from '@phosphor-icons/react';
+import {House,SquaresFour,ShoppingCart,Package,WhatsappLogo,X,ShieldCheck,ArrowLeft,SignOut,Heart,Truck,Money} from '@phosphor-icons/react';
 import {supabase,isDemo,readSharedSessionIdentity} from '@/lib/supabase';
 import {getCatalog,cartProducts} from '@/lib/catalog';
 import {useCart} from '@/lib/cart';
@@ -13,7 +12,8 @@ import type {Product,Category,Settings,Banner,Profile,CatalogData} from '@/lib/t
 import {demoSettings} from '@/lib/demo';
 import {BirthDateField} from './birth-date-field';
 import {StoreHeader} from './store-header';
-import {marketBrandName,marketDescription} from '@/lib/seo';
+import {SupportWidget} from './support-widget';
+import {StoreFooter} from './store-footer';
 
 type Storefront='adult'|'market';
 type StoreContext = {products:Product[];categories:Category[];settings:Settings;banners:Banner[];storefront:Storefront;loading:boolean;error:string;profile:Profile|null;authReady:boolean;authError:string;favorites:string[];reload:()=>Promise<void>;requireAuth:(action:()=>void)=>void;changeCart:(variant:string,quantity:number)=>Promise<void>;toggleFavorite:(id:string)=>void;notify:(message:string)=>void;signOut:()=>Promise<void>};
@@ -54,13 +54,25 @@ export function StoreProvider({children,initialCatalog,storefront='adult'}:{chil
  async function signOut(){if(supabase)await supabase.auth.signOut({scope:'local'});setProfile(null);setItems([]);setFavorites([]);router.push('/')}
  const count=items.reduce((s,i)=>s+i.quantity,0);
  return <Context.Provider value={{products,categories,settings,banners,storefront,loading,error,profile,authReady,authError,favorites,reload,requireAuth,changeCart,toggleFavorite,notify,signOut}}>
-  <div className="announcement"><span className="announcement-primary"><ShieldCheck size={16}/>خصوصيتك تهمنا</span><span><Package size={15}/>تغليف آمن</span><span><Truck size={16}/>نوصل للمحافظات اللي نخدمها</span></div>
+  <div className="announcement">
+   <div className="wrap announcement-wrap">
+    <div className="announcement-group announcement-right">
+     <span className="announcement-primary"><ShieldCheck size={16}/>تسوّق براحتك، والدفع عند الاستلام</span>
+     <span><Package size={15}/>تغليف محايد يحفظ خصوصيتك</span>
+     <span><Truck size={16}/>توصيل للمحافظات المتاحة</span>
+    </div>
+    <div className="announcement-group announcement-left">
+     <span><Money size={16}/>الدفع نقداً عند الاستلام</span>
+     <span className="announcement-tagline">اختيار براحتك وخصوصيتك محفوظة</span>
+    </div>
+   </div>
+  </div>
   {isDemo&&<div className="demo-strip">هاي معاينة، المنتجات والأسعار بيها توضيحية، والطلبات الحقيقية مو مفعّلة.</div>}
-  <StoreHeader count={count} name={profile?.name} authReady={authReady} isMarket={storefront==='market'} onAccount={()=>requireAuth(()=>router.push('/account'))}/>
+  <StoreHeader count={count} name={profile?.name} authReady={authReady} isMarket={storefront==='market'} whatsappPhone={storefront==='market'?settings.market_whatsapp_phone:settings.adult_whatsapp_phone||settings.whatsapp_phone} onAccount={()=>requireAuth(()=>router.push('/account'))}/>
   <main id="main-content">{children}</main>
-  <footer className="site-footer"><div className="footer wrap"><div className="footer-brand"><Image src={storefront==='market'?'/assets/esi-logo.jpg':'/assets/logo_official_black.png'} alt={storefront==='market'?'شعار ESI Online Store':''} width={56} height={56}/><div><strong>{storefront==='market'?marketBrandName:'المتجر الأوربي في العراق'}</strong><p>{storefront==='market'?marketDescription:'اختيارات تناسبك، وخصوصيتك محفوظة.'}</p></div></div><nav aria-label="روابط التسوق"><h2>تسوق</h2><Link href="/categories">كل الأقسام</Link><Link href="/categories?offers=1">العروض</Link><Link href="/favorites">المفضلة</Link>{storefront==='market'&&<a href="https://euiq.store">منتجات +18</a>}</nav><nav aria-label="المساعدة"><h2>المساعدة</h2><Link href="/orders">شوف طلباتك</Link><Link href="/privacy">الخصوصية والشروط</Link><button onClick={()=>setSupport(true)}>احچي ويانا</button></nav><ul className="footer-trust"><li><ShieldCheck size={18}/>خصوصيتك تهمنا</li><li><Package size={18}/>تغليف آمن</li><li><Truck size={18}/>نوصل للمحافظات اللي نخدمها</li></ul><small>© {new Date().getFullYear()} {storefront==='market'?marketBrandName:'المتجر الأوربي'}</small></div></footer>
+  <StoreFooter isMarket={storefront==='market'} onSupport={()=>setSupport(true)}/>
   <nav className="bottom-nav" aria-label="القائمة الرئيسية">{[{href:'/',label:'الرئيسية',Icon:House},{href:'/categories',label:'الأقسام',Icon:SquaresFour},{href:'/cart',label:'السلة',Icon:ShoppingCart},{href:'/orders',label:'طلباتي',Icon:Package},{href:'/favorites',label:'المفضلة',Icon:Heart}].map(({href,label,Icon})=><button key={href} className={`${pathname===href?'active':''} ${href==='/cart'?'nav-cart':''}`} onClick={()=>href==='/orders'||href==='/account'?requireAuth(()=>router.push(href)):router.push(href)}><span><Icon size={24} weight={pathname===href?'fill':'regular'}/>{href==='/cart'&&count>0&&<b>{count}</b>}</span>{label}</button>)}</nav>
-  <div className="support">{(()=>{const phone=storefront==='market'?settings.market_whatsapp_phone:settings.adult_whatsapp_phone;const digits=(phone??'').replace(/\D/g,'');return digits?<a className="whatsapp-fab" aria-label="راسلنا على واتساب" href={`https://wa.me/${digits}`} target="_blank" rel="noreferrer"><WhatsappLogo size={25}/></a>:null})()}<button className="support-trigger" aria-label="الدعم والتواصل" aria-expanded={support} onClick={()=>setSupport(!support)}>{support?<X size={24}/>:<Headset size={26}/>}</button>{support&&<div className="support-panel"><strong>حاضرين حتى نساعدك</strong>{settings.support_phone?<a href={`tel:${settings.support_phone}`}><Phone size={20}/>اتصل بينا</a>:<p>تواصل ويانا إذا تحتاج مساعدة.</p>}</div>}</div>
+  <SupportWidget open={support} onOpenChange={setSupport} whatsappPhone={storefront==='market'?settings.market_whatsapp_phone:settings.adult_whatsapp_phone||settings.whatsapp_phone} supportPhone={settings.support_phone}/>
   {toast&&<div className="toast" role="status">{toast}<Link href="/cart">شوف السلة <ArrowLeft size={14}/></Link></div>}
   {auth&&<AuthDialog profile={profile} onClose={()=>{setAuth(false);pending.current=null}} onDone={async(p)=>{setProfile(p);setAuth(false);if(supabase)await loadUser();const action=pending.current;pending.current=null;setTimeout(()=>action?.(),0)}}/>}
  </Context.Provider>

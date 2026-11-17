@@ -1,7 +1,7 @@
 'use client';
 
 import {useRef,useState} from 'react';
-import {Play} from '@phosphor-icons/react';
+import {CaretLeft,CaretRight,Play} from '@phosphor-icons/react';
 
 type ProductMedia={type:'image'|'video';src:string};
 
@@ -41,7 +41,7 @@ export function ProductMediaGallery({title,images,videoUrl,discount}:Props){
      if(active?.type!=='image'||touchStart.current===null)return;
      const distance=event.changedTouches[0]?.clientX-touchStart.current;
      touchStart.current=null;
-     if(typeof distance==='number'&&Math.abs(distance)>45)move(distance>0?1:-1);
+     if(typeof distance==='number'&&Math.abs(distance)>45)move(distance>0?-1:1);
     }}
     onKeyDown={event=>{
      if(event.target!==event.currentTarget)return;
@@ -56,6 +56,10 @@ export function ProductMediaGallery({title,images,videoUrl,discount}:Props){
       : <p className="gallery-empty">ماكو صور أو فيديو لهذا المنتج</p>}
     {discount>0&&<span className="discount">خصم {discount}%</span>}
     {media.length>1&&active?.type==='image'&&<span className="gallery-count" aria-live="polite">{imageNumber} / {imageCount}</span>}
+    {media.length>1&&<>
+     <button className="gallery-arrow gallery-arrow-previous" type="button" aria-label="اعرض الوسيط السابق" onClick={()=>move(-1)}><CaretRight size={22}/></button>
+     <button className="gallery-arrow gallery-arrow-next" type="button" aria-label="اعرض الوسيط التالي" onClick={()=>move(1)}><CaretLeft size={22}/></button>
+    </>}
    </div>
 
    {media.length>1&&<div className="gallery-thumbnails" role="group" aria-label="اختار صورة أو فيديو">
@@ -65,6 +69,7 @@ export function ProductMediaGallery({title,images,videoUrl,discount}:Props){
      className={`gallery-thumbnail ${activeIndex===index?'selected':''} ${item.type==='video'?'is-video':''}`}
      aria-label={item.type==='video'?'عرض فيديو المنتج':`عرض الصورة ${index+1}`}
      aria-pressed={activeIndex===index}
+     aria-current={activeIndex===index?'true':undefined}
      onClick={()=>setActiveIndex(index)}
     >
      {item.type==='image'

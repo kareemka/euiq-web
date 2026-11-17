@@ -1,1 +1,2 @@
-export default function Loading(){return <div className="page-loading" role="status">دا نجهّز المتجر…</div>}
+import {StorefrontLoading} from '@/components/store-loading';
+export default function Loading(){return <StorefrontLoading/>}

@@ -32,7 +32,7 @@ function migrateLocalStorageSession(){
   if(!legacy)return;
   const encoded='base64-'+btoa(new TextEncoder().encode(legacy).reduce((value,byte)=>value+String.fromCharCode(byte),'' )).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
   const parts:string[]=[];let remaining=encodeURIComponent(encoded);
-  while(remaining){let part=remaining.slice(0,3180),percent=part.lastIndexOf('%');if(percent>part.length-3)part=part.slice(0,percent);while(part){try{decodeURIComponent(part);break}catch{part=part.slice(0,-3)}}parts.push(decodeURIComponent(part));remaining=remaining.slice(part.length);}
+  while(remaining){let part=remaining.slice(0,3180);const percent=part.lastIndexOf('%');if(percent>part.length-3)part=part.slice(0,percent);while(part){try{decodeURIComponent(part);break}catch{part=part.slice(0,-3)}}parts.push(decodeURIComponent(part));remaining=remaining.slice(part.length);}
   const secure=window.location.protocol==='https:'?'; Secure':'';
   for(let index=0;index<parts.length;index++)document.cookie=`${storageKey}${parts.length>1?'.'+index:''}=${encodeURIComponent(parts[index])}; Domain=.euiq.store; Path=/; SameSite=Lax; Max-Age=34560000${secure}`;
   if(document.cookie.split('; ').some(cookie=>cookie.startsWith(`${storageKey}=`)||cookie.startsWith(`${storageKey}.0=`)))window.localStorage.removeItem(storageKey);

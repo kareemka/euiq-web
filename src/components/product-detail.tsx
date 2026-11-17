@@ -11,6 +11,7 @@ import {useCart} from '@/lib/cart';
 import {money} from '@/lib/domain';
 import {CatalogGrid} from '@/components/catalog-grid';
 import {ProductMediaGallery} from '@/components/product-media-gallery';
+import {ProductLoading} from './store-loading';
 import type {Product} from '@/lib/types';
 
 export default function ProductPage({params,initialProduct}:{params:Promise<{slug:string}>;initialProduct?:Product}){
@@ -27,7 +28,7 @@ export default function ProductPage({params,initialProduct}:{params:Promise<{slu
   if(product&&product.id===slug)router.replace(productUrl(product));
  },[product,slug,router]);
 
- if(loading)return <div className="page-loading" role="status">دا نحمّل المنتج…</div>;
+ if(loading&&!product)return <ProductLoading/>;
  if(error)return <div className="wrap page"><div className="empty"><p>{error}</p><button className="button" onClick={()=>void reload()}>جرّب مرة ثانية</button></div></div>;
  if(!product)return <div className="wrap page"><div className="empty"><MagnifyingGlass size={48}/><h1>ما لگينا المنتج</h1><p>يمكن انحذف المنتج أو رابطه تغيّر.</p><Link href="/categories" className="button">شوف المنتجات</Link></div></div>;
 

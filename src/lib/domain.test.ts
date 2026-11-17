@@ -20,7 +20,7 @@ describe('age boundary',()=>{
 });
 describe('color stock and product cap',()=>{
  const p=demoProducts[0];const black=p.product_variants[0],red=p.product_variants[1],empty=p.product_variants[2];
- it('sums all colors toward the product limit',()=>expect(()=>validateCartChange([{variant_id:black.id,quantity:2}],demoProducts,red.id,1)).toThrow('قطعتان'));
+ it('sums all colors toward the product limit',()=>expect(()=>validateCartChange([{variant_id:black.id,quantity:2}],demoProducts,red.id,1)).toThrow('قطعتين'));
  it('allows one piece of each color',()=>expect(()=>validateCartChange([{variant_id:black.id,quantity:1}],demoProducts,red.id,1)).not.toThrow());
  it('rejects unavailable color and fractional quantities',()=>{expect(()=>validateCartChange([],demoProducts,empty.id,1)).toThrow();expect(()=>validateCartChange([],demoProducts,black.id,1.5)).toThrow()});
  it('uses available stock after reservations',()=>{const products=structuredClone(demoProducts);products[0].product_variants[0].reserved=5;expect(()=>validateCartChange([],products,black.id,1)).toThrow()});
